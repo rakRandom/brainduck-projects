@@ -7,7 +7,7 @@ setup(
     name='brainduck',
     version='v1',
     packages=find_packages(),
-    url='',
+    url='https://github.com/rakRandom/brainduck-interpreter',
     author='rakRandom',
     description='Brainfuck language interpreter',
     install_requires=requirements
