@@ -11,7 +11,7 @@ def execute_shell(interpreter: BrainDuckInterpreter):
     code: list[str] | str = list()
     user_input: str
 
-    print("Brainfuck interpreter")
+    print("Brainfuck interpreter shell")
 
     while True:
         user_input = input("> ")
