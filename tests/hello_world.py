@@ -7,7 +7,7 @@ if __name__ == "__main__":
     # (e.g: 16 bits cell with value 0 is the same as a 4 bits one)
     interpreter = BrainDuckInterpreter(memory_bits=4, cell_bits=7)
 
-    with open("brainduck_codes/hello_world.bf", "r") as code:
+    with open("../brainfuck_codes/hello_world.bf", "r") as code:
         code = [cmd for cmd in code.read() if cmd in "><+-[],."]
 
     # Expected result: "Hello World!"

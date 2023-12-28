@@ -11,7 +11,7 @@ from modules.brainduck_interpreter import BrainDuckInterpreter
 if __name__ == "__main__":
     interpreter = BrainDuckInterpreter()
 
-    with open("brainduck_codes/advanced.bf", "r") as code:
+    with open("../brainfuck_codes/advanced.bf", "r") as code:
         code = [cmd for cmd in code.read() if cmd in "><+-[],."]
 
     interpreter.run(code, debug=False)
