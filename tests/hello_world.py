@@ -12,4 +12,4 @@ if __name__ == "__main__":
 
     # Expected result: "Hello World!"
     interpreter.run(code, debug=False)
-    print(f"Memory used: {interpreter.memory_usage()} bytes")
+    print(f"Memory used: {interpreter.memory_used} bytes")

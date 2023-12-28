@@ -1,4 +1,5 @@
 import sys
+from operator import countOf
 
 
 class BrainDuckInterpreter:
@@ -32,6 +33,7 @@ class BrainDuckInterpreter:
         self.current_cmd = 0
         self.total_cmds = len(self.code)
         self.user_input = None
+        self.brackets_pos = self.__get_brackets_pos()
 
         while self.current_cmd < self.total_cmds:
             if debug is True:
@@ -46,6 +48,7 @@ class BrainDuckInterpreter:
                 case ',': self.__input()
                 case '.': self.__output(debug)
 
+    # Simple commmands
     def __right(self):
         # If the pointer is in the last cell, go back to the first one
         # If it isn't, simply add one
@@ -82,26 +85,9 @@ class BrainDuckInterpreter:
             self.memory[self.pointer] -= 1
         self.current_cmd += 1
 
+    # Advanced commands
     def __start_loop(self):
-        barrier_count: int = 0
-        brackets_index: int = -1
-
-        # Getting close brackets index, considering looping nests
-        # If the brackets aren't closed, the index will be -1
-        for i, e in enumerate(self.code[self.current_cmd+1:]):
-            if e == '[':
-                barrier_count += 1
-            elif e == ']':
-                if barrier_count == 0:
-                    brackets_index = self.current_cmd + i + 1
-                    break
-                else:
-                    barrier_count -= 1
-
-        # If the brackets index is -1, in other words, if the brackets aren't closed, the program will be closed
-        if brackets_index == -1:
-            print(f"Error: The brackets in the position {self.current_cmd} are not closed.")
-            sys.exit(0)
+        brackets_index = self.brackets_pos[self.current_cmd]
 
         # If the current cell isn't zero the looping will start, if it's zero jump to the end of the loop
         if self.memory[self.pointer] != 0:
@@ -110,26 +96,7 @@ class BrainDuckInterpreter:
             self.current_cmd = brackets_index + 1
 
     def __end_loop(self):
-        barrier_count: int = 0
-        brackets_index: int = -1
-
-        # Getting open brackets index, considering looping nests
-        # If it isn't an open bracket, the index will be -1
-        # Because of the inverse array, the index of the brackets is self.current_cmd - i - 1
-        for i, e in enumerate(self.code[self.current_cmd-1::-1]):
-            if e == ']':
-                barrier_count += 1
-            elif e == '[':
-                if barrier_count == 0:
-                    brackets_index = self.current_cmd - i - 1
-                    break
-                else:
-                    barrier_count -= 1
-
-        # If the brackets index is -1, in other words, if there isn't an open bracket, the program will be closed
-        if brackets_index == -1:
-            print(f"Error: The brackets in the position {self.current_cmd} are not closed.")
-            sys.exit(0)
+        brackets_index = self.brackets_pos[self.current_cmd]
 
         # If the current cell isn't zero the looping will start again, if it's zero then move to the next command
         if self.memory[self.pointer] == 0:
@@ -164,7 +131,49 @@ class BrainDuckInterpreter:
 
         self.current_cmd += 1
 
-    def memory_usage(self):
+    def __get_brackets_pos(self):
+        """ Gets the position of the corresponding brackets. """
+        brac_dict: dict[int, str | int]
+        brac_list: list[int]
+        close_brac_list: list[int] = list()
+        open_brac_list: list[int]
+
+        # Getting the position and the character for each item in the cmds list, if it's a bracket
+        brac_dict = {pos: char for pos, char in enumerate(self.code) if char in "[]"}
+
+        # If some brackets aren't closed
+        if countOf(brac_dict.values(), "[") != countOf(brac_dict.values(), "]"):
+            print(f"Error: Some pair of brackets is not closed.")
+            sys.exit(0)
+
+        # This part is a bit complex
+        # First we need to get a copy of the keys (brackets positions)
+        # Second we get a list of the open brackets position and invert it
+        # Why? Because we will get the pairs from inside out, and then remove the inner pairs from the copy of keys
+
+        brac_list = list(brac_dict.keys())  # Copy of the keys
+        open_brac_list = [pos for pos, char in brac_dict.items() if char == "["][::-1]  # Open brackets position (inverted)
+
+        for open_brac_pos in open_brac_list:
+            # The position of the close bracket of the inner pair of brackets will always be one index more than the open bracket
+            close_brac_pos = brac_list[brac_list.index(open_brac_pos) + 1]
+            # Append it to the list of close brackets
+            close_brac_list.append(close_brac_pos)
+
+            # And then remote the pair from the list
+            brac_list.remove(close_brac_pos)
+            brac_list.remove(open_brac_pos)
+
+        # Zipping the open brackets list and the close brackets list
+        brac_dict = dict(zip(open_brac_list, close_brac_list))
+
+        # Adding the inverse values, k:v to v:k at the end of the dict
+        brac_dict = {**brac_dict, **{v: k for k, v in brac_dict.items()}}
+
+        return brac_dict
+
+    @property
+    def memory_used(self):
         """ Returns the memory used by the interpreter.
 
         :return: The sum of the sys.getsizeof() of each attribute used in the Brainfuck interpreter (memory size, memory list/grid, code, cell size, pointer loc., current cmd, total cmds and user input).

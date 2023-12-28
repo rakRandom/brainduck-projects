@@ -9,4 +9,4 @@ if __name__ == "__main__":
 
     # Try typing the alphabet when you run the code
     interpreter.run(code, debug=False)
-    print(f"\nMemory used: {interpreter.memory_usage()} bytes")
+    print(f"\nMemory used: {interpreter.memory_used} bytes")
