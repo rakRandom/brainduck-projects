@@ -1,7 +1,10 @@
 class BrainDuckInterpreter:
     def __init__(self): ...
     def run(self, code, debug=False): ...
-    def memory_usage(self): ...
+
+    @property
+    def memory_used(self):
+        return None
 
 
 def execute_shell(interpreter: BrainDuckInterpreter):
@@ -26,4 +29,4 @@ def execute_external_code(interpreter: BrainDuckInterpreter, path: str):
         code = [cmd for cmd in code.read() if cmd in "><+-[],."]
 
     interpreter.run(code, debug=False)
-    print(f"\nMemory used: {interpreter.memory_usage()} bytes")
+    print(f"\nMemory used: {interpreter.memory_used} bytes")

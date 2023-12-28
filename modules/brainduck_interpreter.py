@@ -27,7 +27,7 @@ class BrainDuckInterpreter:
         :param debug: If it's True, at each command will be printed the current command, the current pointer location and the value of the memory that the pointer is pointing. The output will also be changed, outputing the cell value instead of his ASCII correspondent.
         """
 
-        self.memory = [0 for _ in range(self.memory_size)]
+        self.memory = [0] * self.memory_size
         self.code = code
         self.pointer = 0
         self.current_cmd = 0
