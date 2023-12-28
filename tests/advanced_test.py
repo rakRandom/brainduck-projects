@@ -15,4 +15,4 @@ if __name__ == "__main__":
         code = [cmd for cmd in code.read() if cmd in "><+-[],."]
 
     interpreter.run(code, debug=False)
-    print(f"\nMemory used: {interpreter.memory_usage()} bytes")
+    print(f"\nMemory used: {interpreter.memory_used} bytes")
