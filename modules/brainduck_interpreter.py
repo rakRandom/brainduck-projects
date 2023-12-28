@@ -17,36 +17,42 @@ class BrainDuckInterpreter:
         self.cell_size: int = 2 ** cell_bits - 1  # Number of bits that each cell has
         self.pointer: int = 0
         self.current_cmd: int = 0
-        self.total_cmds: int
         self.user_input: str | None
+        self.debug_mode: bool
+        self.brackets_pos: list[int, int]
 
-    def run(self, code: list[str], debug: bool = False):
+    def run(self, code: list[str], debug_mode: bool = False):
         """ Execute a Brainfuck code.
-
         :param code: A list of instruction in Brainfuck using the original brainfuck sintaxe and rules.
-        :param debug: If it's True, at each command will be printed the current command, the current pointer location and the value of the memory that the pointer is pointing. The output will also be changed, outputing the cell value instead of his ASCII correspondent.
+        :param debug_mode: If it's True, at each command will be printed the current command, the current pointer location and the value of the memory that the pointer is pointing. The output will also be changed, outputing the cell value instead of his ASCII correspondent.
         """
 
         self.memory = [0] * self.memory_size
         self.code = code
         self.pointer = 0
         self.current_cmd = 0
-        self.total_cmds = len(self.code)
         self.user_input = None
+        self.debug_mode = debug_mode
         self.brackets_pos = self.__get_brackets_pos()
 
-        while self.current_cmd < self.total_cmds:
-            if debug is True:
+        commands = {
+            ">": self.__right,
+            "<": self.__left,
+            "+": self.__increase,
+            "-": self.__decrease,
+            "[": self.__start_loop,
+            "]": self.__end_loop,
+            ",": self.__input,
+            ".": self.__output
+        }
+
+        if debug_mode is True:
+            while self.current_cmd < len(self.code):
                 print(f"{self.code[self.current_cmd]} - c{self.pointer}: {self.memory[self.pointer]}")
-            match self.code[self.current_cmd]:
-                case '>': self.__right()
-                case '<': self.__left()
-                case '+': self.__increase()
-                case '-': self.__decrease()
-                case '[': self.__start_loop()
-                case ']': self.__end_loop()
-                case ',': self.__input()
-                case '.': self.__output(debug)
+                commands[self.code[self.current_cmd]]()
+        else:
+            while self.current_cmd < len(self.code):
+                commands[self.code[self.current_cmd]]()
 
     # Simple commmands
     def __right(self):
@@ -121,8 +127,8 @@ class BrainDuckInterpreter:
 
         self.current_cmd += 1
 
-    def __output(self, debug):
-        if debug is True:
+    def __output(self):
+        if self.debug_mode is True:
             print(self.memory[self.pointer], end=" ")
         else:
             # Printing the value of the memory cell
@@ -175,7 +181,6 @@ class BrainDuckInterpreter:
     @property
     def memory_used(self):
         """ Returns the memory used by the interpreter.
-
         :return: The sum of the sys.getsizeof() of each attribute used in the Brainfuck interpreter (memory size, memory list/grid, code, cell size, pointer loc., current cmd, total cmds and user input).
         """
 
@@ -185,7 +190,7 @@ class BrainDuckInterpreter:
                        + sys.getsizeof(self.cell_size)
                        + sys.getsizeof(self.pointer)
                        + sys.getsizeof(self.current_cmd)
-                       + sys.getsizeof(self.total_cmds)
-                       + sys.getsizeof(self.user_input))
+                       + sys.getsizeof(self.user_input)
+                       + sys.getsizeof(self.brackets_pos))
 
         return memory_used

@@ -14,5 +14,5 @@ if __name__ == "__main__":
     with open("../brainfuck_codes/advanced.bf", "r") as code:
         code = [cmd for cmd in code.read() if cmd in "><+-[],."]
 
-    interpreter.run(code, debug=False)
+    interpreter.run(code, debug_mode=False)
     print(f"\nMemory used: {interpreter.memory_used} bytes")
