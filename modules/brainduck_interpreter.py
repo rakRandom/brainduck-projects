@@ -11,7 +11,7 @@ class BrainDuckInterpreter:
         :param cell_bits: Number of bits that each cell will have. If each cell has 8 bits, then the maximum value will be 255 for each cell.
         """
 
-        self.memory_size = 2 ** memory_bits  # Numbers of bits that the pointer has
+        self.memory_size: int = 2 ** memory_bits  # Numbers of bits that the pointer has
         self.memory: list[int]
         self.code: list[str]
         self.cell_size: int = 2 ** cell_bits - 1  # Number of bits that each cell has
