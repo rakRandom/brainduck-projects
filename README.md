@@ -5,8 +5,9 @@
 This project is based on the esoteric Brainfuck language, known for being one of the most difficult to understand and 
 use, and that's why I made this interpreter in a dynamic and high-level language, Python.
 
-## How to use
 - --
+## How to use
+
 ### Running in the IDE
 In the directories of this project there is the test folder, which contains 4 tests, and the ```run.py``` file. The files in the 
 test folder work with an external Brainfuck file, while the run file can also work by creating a "shell", like in Python.
@@ -28,8 +29,9 @@ name suggests, is the path to the Brainfuck file.
 
 The argument is optional, and if it is not included, the interpreter will be executed in 'shell' mode.
 
-## How the interpreter works
 - --
+## How the interpreter works
+
 ### The BrainDuckInterpreter class
 The interpreter is a class that works using the original Brainfuck syntax and rules. The remaining Python files take the 
 Brainfuck file, read it, separate the text into a list of characters, and filter out those that are not Brainfuck commands. 
@@ -68,6 +70,7 @@ The ```BrainDuckInterpreter``` class is independent of the rest of the project, 
 reusing the file, its only dependencies being the command prompt, if a new project wants to use a custom interface it 
 will have to change the interpreter code a little.
 
-## License
 - --
+## License
+
 Licensed under the MIT license. See [LICENSE](LICENSE).
