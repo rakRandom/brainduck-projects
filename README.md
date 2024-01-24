@@ -71,6 +71,19 @@ reusing the file, its only dependencies being the command prompt, if a new proje
 will have to change the interpreter code a little.
 
 - --
+## C++ Version
+
+ To compile the C++ version, simply run the make.bat file at the command prompt.
+```
+C:\brainduck-interpreter\cpp_ver>make
+```
+ And then you can run the code with the parameter being the .bf file you want to run.
+```
+C:\brainduck-interpreter\cpp_ver>brainfuck test_codes/mandelbrot.bf
+```
+ The code uses stack/compile allocated memory to read the brainfuck and execute it, so there is a limit of 65,536 (or 2 to the power of 16) characters. This version **does not** contain the debug option, other than that it executes the code in a similar way.
+
+- --
 ## License
 
 Licensed under the MIT license. See [LICENSE](LICENSE).
