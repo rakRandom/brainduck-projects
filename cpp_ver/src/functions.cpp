@@ -14,13 +14,12 @@ uint16_t find_closed_bracket(const char * cmds, uint16_t pos) {
                 return (uint16_t) i;
             else
                 openbt--;
-            
             break;
         
-        default: break;
+        default:
+            break;
         }
     }
-    
     return -1;
 }
 
@@ -38,12 +37,11 @@ uint16_t find_opened_bracket(const char * cmds, uint16_t pos) {
                 return (uint16_t) i;
             else
                 closebt--;
-            
             break;
         
-        default: break;
+        default:
+            break;
         }
     }
-    
     return -1;
 }

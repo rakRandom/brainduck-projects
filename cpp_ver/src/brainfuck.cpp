@@ -1,11 +1,16 @@
 #include "functions.h"
+#include <fstream>  // create, read and write to files
+// #include <vector>  // allows safe dynamic arrays that are automatically removed from memory
 
+#define DEFAULT_BUFFER_SIZE 65536
+#define MEMORY_SIZE 65536
 
-char input[65536];
-char commands[65536];
-uint8_t memory[65536];
-uint16_t brackets_pos[65536];
+char input[DEFAULT_BUFFER_SIZE];
+char commands[DEFAULT_BUFFER_SIZE];
+uint8_t memory[MEMORY_SIZE];
+uint16_t brackets_pos[DEFAULT_BUFFER_SIZE];
 uint16_t cell, cmd = 0;
+
 
 void setup(const char * file_path);
 
@@ -13,9 +18,7 @@ void setup(const char * file_path);
 int main(int argc, char * argv[]) {
     if (*argv[1] == '\0')
         return 1;
-    
     setup(argv[1]);
-
 
     while (cmd < sizeof(commands) / sizeof(char) - 1) {
         switch (commands[cmd])
@@ -76,7 +79,6 @@ int main(int argc, char * argv[]) {
             break;
         }
     }
-
     return 0;
 }
 
@@ -87,8 +89,21 @@ void setup(const char * file_path) {
 
     // Getting the file content
     std::ifstream in(file_path);
-    std::string code((std::istreambuf_iterator<char>(in)), 
-        std::istreambuf_iterator<char>());
+    std::string raw_code((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+    
+    // Removing every character that isn't a brainfuck command (optimization)
+    std::string code;
+    code.reserve(raw_code.size());
+    for(uint32_t i = 0; i < raw_code.size(); ++i)
+        if (raw_code[i] == '>' || 
+            raw_code[i] == '<' || 
+            raw_code[i] == '+' || 
+            raw_code[i] == '-' || 
+            raw_code[i] == '[' || 
+            raw_code[i] == ']' || 
+            raw_code[i] == ',' || 
+            raw_code[i] == '.')
+            code += raw_code[i];
     
     // Code string size
     // std::cout << sizeof(*code.c_str())*strlen(code.c_str()) << std::endl;

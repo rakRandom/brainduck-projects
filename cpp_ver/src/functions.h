@@ -4,8 +4,7 @@
 #include <iostream> // deals with input and output
 // #include <string>   // string library
 #include <cstdint>  // C standart int library, contains uint8_t, uint16_t and et cetera.
-#include <fstream>  // create, read and write to files
-#include <cstring>
+#include <cstring>  // C standart string library, contains strlen(), strcpy() and et cetera.
 // using namespace std;  // let us use std functions without explicity telling that is from std (std::)
 
 // telling the brainfuck.cpp file that this functions will exist in some point (in link phase)
