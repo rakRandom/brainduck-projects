@@ -1,6 +1,4 @@
-#include "functions.h"
-#include <fstream>  // create, read and write to files
-// #include <vector>  // allows safe dynamic arrays that are automatically removed from memory
+#include "brainfuck.hpp"
 
 #define DEFAULT_BUFFER_SIZE 65536
 #define MEMORY_SIZE 65536
@@ -90,6 +88,7 @@ void setup(const char * file_path) {
     // Getting the file content
     std::ifstream in(file_path);
     std::string raw_code((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+    in.close();
     
     // Removing every character that isn't a brainfuck command (optimization)
     std::string code;

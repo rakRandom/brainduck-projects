@@ -1,5 +1,10 @@
-#include "functions.h"
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
 
+#include <cstdint>  // C standart int library, contains uint8_t, uint16_t and et cetera.
+#include <cstring>  // C standart string library, contains strlen(), strcpy() and et cetera.
+
+#endif // FUNCTIONS_H
 
 uint16_t find_closed_bracket(const char * cmds, uint16_t pos) {
     uint16_t openbt = 0;

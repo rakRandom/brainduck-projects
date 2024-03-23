@@ -14,7 +14,7 @@ def execute_shell(interpreter: BrainDuckInterpreter, debug_mode: bool = False):
     code: list[str] | str
     user_input: str
 
-    print("Brainfuck interpreter shell - type \"exit\" to exit")
+    print("Brainfuck Interpreter Shell (BIS) - type \"exit\" to exit")
     while True:
         code = list()
 
