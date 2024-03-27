@@ -12,9 +12,9 @@ class vector
     private:
         T *array_ptr;
         T *cpy_ptr;
+        char cpy_updated = 0;
         size_t vec_length;
         size_t size;
-    
 
     public:
 // ==================================================================================================================================================
@@ -99,6 +99,7 @@ class vector
             free(array_ptr);
             array_ptr = new_ptr;
 
+            cpy_updated = 0;
             vec_length += size_to_add;
             size = dest_size;
 
@@ -140,6 +141,7 @@ class vector
             free(array_ptr);
             array_ptr = new_ptr;
 
+            cpy_updated = 0;
             vec_length -= size_to_remove;
             size = dest_size;
 
@@ -166,6 +168,7 @@ class vector
             if (array_ptr[index] == 0)
             {
                 array_ptr[index] = value;
+                cpy_updated = 0;
                 return 1;
             }
             
@@ -175,6 +178,7 @@ class vector
                 if (grow(1))
                 {
                     array_ptr[index + 1] = value;
+                    cpy_updated = 0;
                     return 1;
                 }
 
@@ -214,6 +218,7 @@ class vector
                     if(grow(1))
                     {
                         array_ptr[i+1] = value;
+                        cpy_updated = 0;
                         return 1;
                     }
                     else
@@ -232,6 +237,7 @@ class vector
          */
         int remove(size_t index) 
         {
+            cpy_updated = 0;
             return set(index, 0);
         }
 
@@ -245,6 +251,7 @@ class vector
                 if (array_ptr[i] != 0)
                 {
                     array_ptr[i] = 0;
+                    cpy_updated = 0;
                     return 1;
                 }
             
@@ -260,6 +267,10 @@ class vector
          * The pointer will be automatically freed when the vector is destroyed.
          */
         T* items() {
+            // If the copy pointer is already updated, just return it
+            if (cpy_updated)
+                return cpy_ptr;
+
             // memcpy_s error conditions test #1
             if (array_ptr == NULL)
                 return NULL;
@@ -282,7 +293,29 @@ class vector
                 ) != 0)
                 return NULL;
 
+            cpy_updated = 1;
             return cpy_ptr;
+        }
+
+        int copy(const T * other_pointer, const size_t pointer_size) {
+            // memcpy_s error conditions test #1
+            if (array_ptr == NULL || other_pointer == NULL)
+                return 0;
+
+            // memcpy_s error conditions test #2
+            if (pointer_size > size)
+                pointer_size = size;
+            
+            // Copying the array from original pointer to the copy
+            if (memcpy_s(
+                    array_ptr,
+                    size,
+                    other_pointer,
+                    pointer_size
+                ) != 0)
+                return 0;
+            
+            return 1;
         }
 
         /* 
@@ -301,6 +334,7 @@ class vector
                     return 0;
             }
             
+            cpy_updated = 0;
             return 1;
         }
 
@@ -320,6 +354,7 @@ class vector
                     return 0;
             }
             
+            cpy_updated = 0;
             return 1;
         }
 
@@ -391,6 +426,7 @@ class vector
             if (index < vec_length && index >= 0) 
             {
                 array_ptr[index] = value;
+                cpy_updated = 0;
                 return 1;
             }
 
@@ -406,7 +442,7 @@ class vector
         T get(size_t index) 
         {
             if (index < vec_length && index >= 0)
-                return index[array_ptr];
+                return array_ptr[index];
             else 
                 return (T) 0;
         }
@@ -415,6 +451,7 @@ class vector
             if (index < vec_length && index >= 0) 
             {
                 array_ptr[index]++;
+                cpy_updated = 0;
                 return 1;
             }
             
@@ -426,6 +463,7 @@ class vector
             if (index < vec_length && index >= 0)
             {
                 array_ptr[index]--;
+                cpy_updated = 0;
                 return 1;
             }
             else

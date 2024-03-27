@@ -6,7 +6,7 @@
 char input[DEFAULT_BUFFER_SIZE];
 char commands[DEFAULT_BUFFER_SIZE];
 vector<uint8_t> memory(MEMORY_SIZE);
-uint16_t brackets_pos[DEFAULT_BUFFER_SIZE];
+vector<uint16_t> brackets_pos(DEFAULT_BUFFER_SIZE);
 uint16_t cell, cmd = 0;
 
 
@@ -50,7 +50,7 @@ int main(int argc, char * argv[])
             /* Conditional Start */
             case '[':
                 if (memory.get(cell) == 0)
-                    cmd = brackets_pos[cmd];
+                    cmd = brackets_pos.get(cmd);
                 else
                     cmd++;
                 break;
@@ -58,7 +58,7 @@ int main(int argc, char * argv[])
             /* Conditional end */
             case ']':
                 if (memory.get(cell) != 0)
-                    cmd = brackets_pos[cmd];
+                    cmd = brackets_pos.get(cmd);
                 else
                     cmd++;
                 break;
@@ -135,8 +135,8 @@ void setup(const char * file_path)
     for (uint16_t cmd = 0; cmd < strlen(commands); cmd++) 
     {
         if (commands[cmd] == '[')
-            brackets_pos[cmd] = find_closed_bracket(commands, cmd);
+            brackets_pos.set(cmd, find_closed_bracket(commands, cmd));
         else if (commands[cmd] == ']')
-            brackets_pos[cmd] = find_opened_bracket(commands, cmd);
+            brackets_pos.set(cmd, find_opened_bracket(commands, cmd));
     }
 }
