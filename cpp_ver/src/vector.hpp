@@ -68,38 +68,6 @@ class vector
 
 // ==================================================================================================================================================
 
-        /*
-         * Set the element at the selected index to the selected value.
-         * Returns 1 if the element was setted, 0 if was not.
-         */
-        int set(size_t index, T value) 
-        {
-            if (index < vec_length && index >= 0) 
-            {
-                array_ptr[index] = value;
-                return 1;
-            }
-
-            else 
-                return 0;
-        }
-
-        /*
-         * Get the element at the selected index.
-         * Returns the value of the element if the index was in 
-         * the range of the array, 0 if was not.
-         */
-        T get(size_t index) 
-        {
-            if (index < vec_length && index >= 0)
-                return index[array_ptr];
-            else 
-                return (T) 0;
-        }
-
-
-// ==================================================================================================================================================
-
         /* 
          * Replaces the old pointer with a new, bigger one.
          * Returns 1 if successful, 0 if not.
@@ -412,6 +380,56 @@ class vector
                     c++;
 
             return c;
+        }
+
+        /*
+         * Set the element at the selected index to the selected value.
+         * Returns 1 if the element was setted, 0 if was not.
+         */
+        int set(size_t index, T value) 
+        {
+            if (index < vec_length && index >= 0) 
+            {
+                array_ptr[index] = value;
+                return 1;
+            }
+
+            else 
+                return 0;
+        }
+
+        /*
+         * Get the element at the selected index.
+         * Returns the value of the element if the index was in 
+         * the range of the array, 0 if was not.
+         */
+        T get(size_t index) 
+        {
+            if (index < vec_length && index >= 0)
+                return index[array_ptr];
+            else 
+                return (T) 0;
+        }
+
+        int add_by_1(size_t index) {
+            if (index < vec_length && index >= 0) 
+            {
+                array_ptr[index]++;
+                return 1;
+            }
+            
+            else
+                return 0;
+        }
+
+        int sub_by_1(size_t index) {
+            if (index < vec_length && index >= 0)
+            {
+                array_ptr[index]--;
+                return 1;
+            }
+            else
+                return 0;
         }
 
 

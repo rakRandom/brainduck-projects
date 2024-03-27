@@ -5,7 +5,7 @@
 
 char input[DEFAULT_BUFFER_SIZE];
 char commands[DEFAULT_BUFFER_SIZE];
-uint8_t memory[MEMORY_SIZE];
+vector<uint8_t> memory(MEMORY_SIZE);
 uint16_t brackets_pos[DEFAULT_BUFFER_SIZE];
 uint16_t cell, cmd = 0;
 
@@ -30,23 +30,23 @@ int main(int argc, char * argv[]) {
             cmd++;
             break;
         case '+':
-            memory[cell]++;
+            memory.add_by_1(cell);
             cmd++;
             break;
         case '-':
-            memory[cell]--;
+            memory.sub_by_1(cell);
             cmd++;
             break;
         
         case '[':
-            if (memory[cell] == 0)
+            if (memory.get(cell) == 0)
                 cmd = brackets_pos[cmd];
             else
                 cmd++;
             break;
         
         case ']':
-            if (memory[cell] != 0) 
+            if (memory.get(cell) != 0)
                 cmd = brackets_pos[cmd];
             else
                 cmd++;
@@ -58,7 +58,7 @@ int main(int argc, char * argv[]) {
                 std::cin.getline(input, sizeof(input) / sizeof(char) - 1);
 
             // Defining the cell value as the first character of the input
-            memory[cell] = input[0];
+            memory.set(cell, input[0]);
         
             // Shifting the array to the left by 1
             for (int i = 1; i < sizeof(input) / sizeof(char); i++)
@@ -68,7 +68,7 @@ int main(int argc, char * argv[]) {
             break;
         
         case '.':
-            std::cout << (char) memory[cell];
+            std::cout << (char) memory.get(cell);
             cmd++;
             break;
         
@@ -83,7 +83,7 @@ int main(int argc, char * argv[]) {
 
 void setup(const char * file_path) {
     std::fill(input, std::end(input), '\0');
-    std::fill(memory, std::end(memory), 0);
+    memory.fill(0);
 
     // Getting the file content
     std::ifstream in(file_path);
