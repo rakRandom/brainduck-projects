@@ -3,8 +3,9 @@
 #define DEFAULT_BUFFER_SIZE 65536
 #define MEMORY_SIZE 65536
 
+// Only array to not be a vector, it's better that way
 char input[DEFAULT_BUFFER_SIZE];
-char commands[DEFAULT_BUFFER_SIZE];
+vector<char> commands(DEFAULT_BUFFER_SIZE);
 vector<uint8_t> memory(MEMORY_SIZE);
 vector<uint16_t> brackets_pos(DEFAULT_BUFFER_SIZE);
 uint16_t cell, cmd = 0;
@@ -19,9 +20,9 @@ int main(int argc, char * argv[])
 
     setup(argv[1]);
 
-    while (cmd < sizeof(commands) / sizeof(char) - 1) 
+    while (cmd < commands.length() - 1) 
     {
-        switch (commands[cmd])
+        switch (commands.get(cmd))
         {
             /* Shift right */
             case '>':
@@ -117,26 +118,16 @@ void setup(const char * file_path)
             raw_code[i] == ',' || 
             raw_code[i] == '.')
             code += raw_code[i];
-    
-    // Code string size
-    // std::cout << sizeof(*code.c_str())*strlen(code.c_str()) << std::endl;
 
-    // As the content may be null, it should be properly copied to the commands as a array of characters
+    // Copying from the code string to the commands
+    commands.copy(code.c_str(), sizeof(*code.c_str())*strlen(code.c_str()));
 
-    // memcpy version - faster:
-    memcpy_s(commands, 
-            sizeof(commands), 
-            code.c_str(), 
-            sizeof(*code.c_str())*strlen(code.c_str()));
-
-    // strcpy version - cleaner:
-    // strcpy_s(commands, sizeof(commands), code.c_str());
-
-    for (uint16_t cmd = 0; cmd < strlen(commands); cmd++) 
+    // Getting all the brackets pairs
+    for (uint16_t cmd = 0; cmd < commands.length() - 1; cmd++) 
     {
-        if (commands[cmd] == '[')
-            brackets_pos.set(cmd, find_closed_bracket(commands, cmd));
-        else if (commands[cmd] == ']')
-            brackets_pos.set(cmd, find_opened_bracket(commands, cmd));
+        if (commands.get(cmd) == '[')
+            brackets_pos.set(cmd, find_closed_bracket(commands.items(), cmd));
+        else if (commands.get(cmd) == ']')
+            brackets_pos.set(cmd, find_opened_bracket(commands.items(), cmd));
     }
 }

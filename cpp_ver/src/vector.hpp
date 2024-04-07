@@ -297,7 +297,7 @@ class vector
             return cpy_ptr;
         }
 
-        int copy(const T * other_pointer, const size_t pointer_size) {
+        int copy(const T * other_pointer, size_t pointer_size) {
             // memcpy_s error conditions test #1
             if (array_ptr == NULL || other_pointer == NULL)
                 return 0;
