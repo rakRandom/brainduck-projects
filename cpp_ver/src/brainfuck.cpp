@@ -1,14 +1,18 @@
 #include "brainfuck.hpp"
 
+typedef uint8_t  u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+
 #define DEFAULT_BUFFER_SIZE 65536
 #define MEMORY_SIZE 65536
 
 // Only array to not be a vector, it's better that way
 char input[DEFAULT_BUFFER_SIZE];
 vector<char> commands(DEFAULT_BUFFER_SIZE);
-vector<uint8_t> memory(MEMORY_SIZE);
-vector<uint16_t> brackets_pos(DEFAULT_BUFFER_SIZE);
-uint16_t cell, cmd = 0;
+vector<u8> memory(MEMORY_SIZE);
+vector<u16> brackets_pos(DEFAULT_BUFFER_SIZE);
+u32 cell, cmd = 0;
 
 
 void setup(const char * file_path);
@@ -123,7 +127,7 @@ void setup(const char * file_path)
     commands.copy(code.c_str(), sizeof(*code.c_str())*strlen(code.c_str()));
 
     // Getting all the brackets pairs
-    for (uint16_t cmd = 0; cmd < commands.length() - 1; cmd++) 
+    for (u32 cmd = 0; cmd < commands.length() - 1; cmd++) 
     {
         if (commands.get(cmd) == '[')
             brackets_pos.set(cmd, find_closed_bracket(commands.items(), cmd));
