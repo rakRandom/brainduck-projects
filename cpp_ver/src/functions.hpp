@@ -6,8 +6,10 @@
 
 #endif // FUNCTIONS_H
 
-uint16_t find_closed_bracket(const char * cmds, uint16_t pos) {
-    uint16_t openbt = 0;
+typedef uint16_t  u16;
+
+u16 find_closed_bracket(const char * cmds, u16 pos) {
+    u16 openbt = 0;
 
     for (size_t i = pos + 1; i < strlen(cmds); i++) {
         switch (cmds[i]) {
@@ -16,7 +18,7 @@ uint16_t find_closed_bracket(const char * cmds, uint16_t pos) {
             break;
         case ']':
             if (openbt == 0)
-                return (uint16_t) i;
+                return (u16) i;
             else
                 openbt--;
             break;
@@ -29,8 +31,8 @@ uint16_t find_closed_bracket(const char * cmds, uint16_t pos) {
 }
 
 
-uint16_t find_opened_bracket(const char * cmds, uint16_t pos) {
-    uint16_t closebt = 0;
+u16 find_opened_bracket(const char * cmds, u16 pos) {
+    u16 closebt = 0;
 
     for (size_t i = pos - 1; i >= 0; i--) {
         switch (cmds[i]) {
@@ -39,7 +41,7 @@ uint16_t find_opened_bracket(const char * cmds, uint16_t pos) {
             break;
         case '[':
             if (closebt == 0)
-                return (uint16_t) i;
+                return (u16) i;
             else
                 closebt--;
             break;

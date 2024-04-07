@@ -1,7 +1,6 @@
 #include "brainfuck.hpp"
 
 typedef uint8_t  u8;
-typedef uint16_t u16;
 typedef uint32_t u32;
 
 #define DEFAULT_BUFFER_SIZE 65536
@@ -11,11 +10,47 @@ typedef uint32_t u32;
 char input[DEFAULT_BUFFER_SIZE];
 vector<char> commands(DEFAULT_BUFFER_SIZE);
 vector<u8> memory(MEMORY_SIZE);
-vector<u16> brackets_pos(DEFAULT_BUFFER_SIZE);
+vector<u32> brackets_pos(DEFAULT_BUFFER_SIZE);
 u32 cell, cmd = 0;
 
 
-void setup(const char * file_path);
+void setup(const char * file_path) 
+{
+    std::fill(input, std::end(input), '\0');
+    memory.fill(0);
+
+    // Getting the file content
+    std::ifstream in(file_path);
+    std::string raw_code((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+    in.close();
+    
+    // Removing every character that isn't a brainfuck command (optimization)
+    std::string code;
+    code.reserve(raw_code.size());
+    for(uint32_t i = 0; i < raw_code.size(); ++i)
+        if (raw_code[i] == '>' || 
+            raw_code[i] == '<' || 
+            raw_code[i] == '+' || 
+            raw_code[i] == '-' || 
+            raw_code[i] == '[' || 
+            raw_code[i] == ']' || 
+            raw_code[i] == ',' || 
+            raw_code[i] == '.')
+            code += raw_code[i];
+
+    // Copying from the code string to the commands
+    commands.copy(code.c_str(), sizeof(*code.c_str())*strlen(code.c_str()));
+
+    // Getting all the brackets pairs
+    for (u32 cmd = 0; cmd < commands.length() - 1; cmd++) 
+    {
+        if (commands.get(cmd) == '[')
+            brackets_pos.set(cmd, find_closed_bracket(commands.items(), cmd));
+        else if (commands.get(cmd) == ']')
+            brackets_pos.set(cmd, find_opened_bracket(commands.items(), cmd));
+    }
+}
+
 
 int main(int argc, char * argv[]) 
 {
@@ -96,42 +131,4 @@ int main(int argc, char * argv[])
         }
     }
     return 0;
-}
-
-
-void setup(const char * file_path) 
-{
-    std::fill(input, std::end(input), '\0');
-    memory.fill(0);
-
-    // Getting the file content
-    std::ifstream in(file_path);
-    std::string raw_code((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
-    in.close();
-    
-    // Removing every character that isn't a brainfuck command (optimization)
-    std::string code;
-    code.reserve(raw_code.size());
-    for(uint32_t i = 0; i < raw_code.size(); ++i)
-        if (raw_code[i] == '>' || 
-            raw_code[i] == '<' || 
-            raw_code[i] == '+' || 
-            raw_code[i] == '-' || 
-            raw_code[i] == '[' || 
-            raw_code[i] == ']' || 
-            raw_code[i] == ',' || 
-            raw_code[i] == '.')
-            code += raw_code[i];
-
-    // Copying from the code string to the commands
-    commands.copy(code.c_str(), sizeof(*code.c_str())*strlen(code.c_str()));
-
-    // Getting all the brackets pairs
-    for (u32 cmd = 0; cmd < commands.length() - 1; cmd++) 
-    {
-        if (commands.get(cmd) == '[')
-            brackets_pos.set(cmd, find_closed_bracket(commands.items(), cmd));
-        else if (commands.get(cmd) == ']')
-            brackets_pos.set(cmd, find_opened_bracket(commands.items(), cmd));
-    }
 }
