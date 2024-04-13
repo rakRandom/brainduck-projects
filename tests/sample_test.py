@@ -1,9 +1,9 @@
-from modules.brainduck_interpreter import BrainDuckInterpreter
+from modules.interpreter import BrainduckInterpreter
 
 
 if __name__ == "__main__":
     # 15 bits pointer and 8 bits cells
-    interpreter = BrainDuckInterpreter()
+    interpreter = BrainduckInterpreter()
 
     with open("../brainfuck_codes/sample.bf", "r") as code:
         code = [cmd for cmd in code.read() if cmd in "><+-[],."]

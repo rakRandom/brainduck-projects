@@ -1,8 +1,8 @@
-from modules.brainduck_interpreter import BrainDuckInterpreter
+from modules.interpreter import BrainduckInterpreter
 
 
 if __name__ == "__main__":
-    interpreter = BrainDuckInterpreter(memory_bits=4)
+    interpreter = BrainduckInterpreter(memory_bits=4)
 
     with open("../brainfuck_codes/user_interaction.bf", "r") as code:
         code = [cmd for cmd in code.read() if cmd in "><+-[],."]

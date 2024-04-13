@@ -2,7 +2,7 @@ import sys
 from operator import countOf
 
 
-class BrainDuckInterpreter:
+class BrainduckInterpreter:
     def __init__(self, memory_bits=15, cell_bits=8):
         """ A Brainfuck Interpreter.
         Use the 'run()' method to run some Brainfuck code.

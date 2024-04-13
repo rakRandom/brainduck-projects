@@ -1,7 +1,7 @@
 from sys import exit
 
 
-class BrainDuckInterpreter:
+class BrainduckInterpreter:
     def __init__(self): ...
     def run(self, code, debug_mode=False): ...
 
@@ -10,7 +10,12 @@ class BrainDuckInterpreter:
         return None
 
 
-def execute_shell(interpreter: BrainDuckInterpreter, debug_mode: bool = False):
+class BrainduckCompiler:
+    def __init__(self): ...
+    def run(self, code, debug_mode=False) -> int: ...
+
+
+def execute_shell(interpreter: BrainduckInterpreter, debug_mode: bool = False):
     code: list[str] | str
     user_input: str
 
@@ -32,9 +37,21 @@ def execute_shell(interpreter: BrainDuckInterpreter, debug_mode: bool = False):
         print()
 
 
-def execute_external_code(interpreter: BrainDuckInterpreter, code_path: str, debug_mode: bool = False):
+def interpret_external_code(interpreter: BrainduckInterpreter, code_path: str, debug_mode: bool = False):
     with open(code_path, "r") as code:
         code = [cmd for cmd in code.read() if cmd in "><+-[],."]
 
     interpreter.run(code, debug_mode)
     print(f"\nMemory used: {interpreter.memory_used} bytes")
+
+
+def compile_external_code(compiler: BrainduckCompiler, code_path: str, debug_mode: bool = False):
+    with open(code_path, "r") as code:
+        code = [cmd for cmd in code.read() if cmd in "><+-[],."]
+
+    error = compiler.run(code, debug_mode)
+
+    if error:
+        print(f"An error occurred during compilation: Error n.º {error}.")
+    else:
+        print(f"Compilation done successfully.")

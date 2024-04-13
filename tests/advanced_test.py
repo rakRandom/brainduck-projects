@@ -5,11 +5,11 @@ Game's Source: https://pastebin.com/1E5US36E
 """
 
 
-from modules.brainduck_interpreter import BrainDuckInterpreter
+from modules.interpreter import BrainduckInterpreter
 
 
 if __name__ == "__main__":
-    interpreter = BrainDuckInterpreter()
+    interpreter = BrainduckInterpreter()
 
     with open("../brainfuck_codes/advanced.bf", "r") as code:
         code = [cmd for cmd in code.read() if cmd in "><+-[],."]
