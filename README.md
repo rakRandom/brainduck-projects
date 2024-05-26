@@ -1,11 +1,14 @@
-# Brainduck, a Brainfuck interpreter
+# Brainduck, a Brainfuck interpreter (and compiler)
 > “Sometimes the questions are complicated, and the answers are simple.” -Dr. Seuss
+
+<br>
 
 ## Description
 This project is based on the esoteric Brainfuck language, known for being one of the most difficult to understand and 
 use, and that's why I made this interpreter in a dynamic and high-level language, Python.
 
-- --
+<br>
+
 ## How to use
 
 ### Running in the IDE
@@ -29,7 +32,8 @@ name suggests, is the path to the Brainfuck file.
 
 The argument is optional, and if it is not included, the interpreter will be executed in 'shell' mode.
 
-- --
+<br>
+
 ## How the interpreter works
 
 ### The BrainDuckInterpreter class
@@ -70,7 +74,8 @@ The ```BrainDuckInterpreter``` class is independent of the rest of the project, 
 reusing the file, its only dependencies being the command prompt, if a new project wants to use a custom interface it 
 will have to change the interpreter code a little.
 
-- --
+<br>
+
 ## C++ Version
 
  To compile the C++ version, simply run the make.bat file at the command prompt.
@@ -83,7 +88,8 @@ C:\brainduck-interpreter\cpp_ver>brainfuck test_codes/mandelbrot.bf
 ```
  The code uses stack/compile allocated memory to read the brainfuck and execute it, so there is a limit of 65,536 (or 2 to the power of 16) characters. This version **does not** contain the debug option, other than that it executes the code in a similar way.
 
-- --
+<br>
+
 ## License
 
 Licensed under the MIT license. See [LICENSE](LICENSE).
