@@ -6,7 +6,7 @@ from modules.execution_functions import execute_shell
 from sys import argv, exit
 
 #
-VALID_OPTIONS: tuple[str, ...] = "--debug", "--d", "--compile", "--c"
+VALID_OPTIONS: tuple[str, ...] = "--debug", "-d", "--compile", "-c"
 
 
 def run(code_path: str, debug_mode: bool, compile_mode: bool):
