@@ -49,10 +49,10 @@ if __name__ == '__main__':
 
     # Setting the configs based on the selected options
     debug = ("--debug" in options_selected or
-             "--d" in options_selected)
+             "-d" in options_selected)
 
     compile_ = ("--compile" in options_selected or
-                "--c" in options_selected)
+                "-c" in options_selected)
 
     # Arguments
     # Getting the path, if it has one
