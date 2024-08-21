@@ -44,6 +44,8 @@ and this creates the memory spaces, defined when creating the object, and other 
 
 ```
 The list of Brainfuck commands:
+ + - Increase the value in the cell by 1
+ - - Decrease the value in the cell by 1
  > - Move the memory pointer to the right
  < - Move the memory pointer to the left
  [ - Start a conditional loop (oversimplified)
