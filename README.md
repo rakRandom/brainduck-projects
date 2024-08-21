@@ -25,8 +25,10 @@ your file, and then your external Brainfuck code will run perfectly.
 Alternatively, you can use it through the CLI, which is very simple. The interpreter has 2 call parameters, one being an 
 option and the other an argument.
 ```
-python brainduck.py --debug code_path (optional)
+python brainduck.py --debug [file path]
 ```
+> [file path] is optional
+
 The option causes the code in Brainfuck to run in debug mode (which will be explained later), and the argument, as the 
 name suggests, is the path to the Brainfuck file.
 
@@ -57,8 +59,16 @@ The list of Brainfuck commands:
 ### How the debug mode works
 
 With debug mode activated, each instruction is shown in the CLI the command used, the current cell and the value of the 
-current cell. Furthermore, when the show cell value command is used, the value is not shown as in the ASCII table, the 
-value is shown as a number.
+current cell. Furthermore, when the show cell value command is used, the value is shown as a number, instead of the ASCII (American Standart Code for Information Interchange) character.
+
+
+### How the compile mode works
+
+Command
+```
+python brainduck.py --compile [file path]
+```
+> [file path] is required
 
 ### Creating an object from BrainDuckInterpreter
 
