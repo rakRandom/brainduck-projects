@@ -32,7 +32,7 @@ python brainduck.py --debug [file path]
 The option causes the code in Brainfuck to run in debug mode (which will be explained later), and the argument, as the 
 name suggests, is the path to the Brainfuck file.
 
-The argument is optional, and if it is not included, the interpreter will be executed in 'shell' mode.
+The argument is optional, and if it is not included, the interpreter will be executed in "shell" mode.
 
 <br>
 
