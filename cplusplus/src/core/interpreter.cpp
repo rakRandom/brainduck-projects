@@ -95,7 +95,7 @@ void setup(const char * file_path)
 }
 
 
-int interpret(int argc, char * argv[]) 
+int interpret(int argc, const char ** argv) 
 {
     if (*argv[1] == '\0')
         return 1;

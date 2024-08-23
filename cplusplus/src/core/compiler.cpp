@@ -154,7 +154,7 @@ int compile_code(const std::string &src)
 }
 
 
-int compile(int argc, const char * argv[]) 
+int compile(int argc, const char ** argv) 
 {
     std::string code = "";
 

@@ -21,7 +21,7 @@ typedef uint32_t u32;
  * for now, it is just an extension of the main.cpp at the `src/` folder
  * that is executed based on a conditional
  */
-int interpret(int argc, char * argv[]);
+int interpret(int argc, const char ** argv);
 
 
 #endif // INTERPRETER_HPP
