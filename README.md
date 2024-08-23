@@ -1,6 +1,8 @@
 # Brainduck, a Brainfuck interpreter (and compiler)
 > “Sometimes the questions are complicated, and the answers are simple.” -Dr. Seuss
 
+### **This README is not updated to the latest modifications**
+
 <br>
 
 ## Description
