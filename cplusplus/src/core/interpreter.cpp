@@ -1,10 +1,53 @@
-#include "brainfuck.hpp"
+#include "interpreter.hpp"
 
-typedef uint8_t  u8;
-typedef uint32_t u32;
 
-#define DEFAULT_BUFFER_SIZE 65536
-#define MEMORY_SIZE 65536
+u16 find_closed_bracket(const char * cmds, u16 pos) 
+{
+    u16 openbt = 0;
+
+    for (size_t i = pos + 1; i < strlen(cmds); i++) {
+        switch (cmds[i]) {
+        case '[':
+            openbt++;
+            break;
+        case ']':
+            if (openbt == 0)
+                return (u16) i;
+            else
+                openbt--;
+            break;
+        
+        default: break;
+        }
+    }
+    return -1;
+}
+
+
+u16 find_opened_bracket(const char * cmds, u16 pos) 
+{
+    u16 closebt = 0;
+
+    for (size_t i = pos - 1; i >= 0; i--) {
+        switch (cmds[i]) {
+        case ']':
+            closebt++;
+            break;
+        case '[':
+            if (closebt == 0)
+                return (u16) i;
+            else
+                closebt--;
+            break;
+        
+        default: break;
+        }
+    }
+    return -1;
+}
+
+// =============================================================================
+
 
 // Only array to not be a vector, it's better that way
 char input[DEFAULT_BUFFER_SIZE];
@@ -52,17 +95,15 @@ void setup(const char * file_path)
 }
 
 
-int main(int argc, char * argv[]) 
+int interpret(int argc, char * argv[]) 
 {
     if (*argv[1] == '\0')
         return 1;
 
     setup(argv[1]);
 
-    while (cmd < commands.length() - 1) 
-    {
-        switch (commands.get(cmd))
-        {
+    while (cmd < commands.length() - 1) {
+        switch (commands.get(cmd)) {
             /* Shift right */
             case '>':
                 cell++;

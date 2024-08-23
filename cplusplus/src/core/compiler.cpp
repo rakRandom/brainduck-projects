@@ -1,18 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <cstdint>
-#include <cstring>
-
-
-#define u8 uint8_t
-#define u16 uint16_t
-#define u32 uint32_t
-#define u64 uint64_t
-#define sz_t size_t
-
-
-// This compiler needs a C compiler
+#include "compiler.hpp"
 
 
 sz_t find_closed_bracket(const std::string &src, sz_t pos) {
@@ -161,14 +147,14 @@ int compile_code(const std::string &src)
     output_c.close();
 
     // Compiling
-    if (system("gcc -O3 output.c -o output -static -static-libgcc"))
+    if (system(COMPILE_COMMAND))
         return 1;
 
     return 0;
 }
 
 
-int main(int argc, const char * argv[]) 
+int compile(int argc, const char * argv[]) 
 {
     std::string code = "";
 

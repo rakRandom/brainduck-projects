@@ -1,1 +1,0 @@
-brainfuck codes/mandelbrot.bf
