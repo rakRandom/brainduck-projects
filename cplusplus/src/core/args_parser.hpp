@@ -8,6 +8,6 @@
  * Flag 0 = long and short arguments are valid
  * Returns the index of the arg
  */
-int option_pos(int argc, const char ** argv, const char * value, int flag = 0);
+int option_pos(int argc, const char ** argv, const char value[], int flag = 0);
 
 #endif  // ARGS_PARSER_HPP

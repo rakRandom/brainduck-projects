@@ -1,6 +1,6 @@
-#include "core/args_parser.hpp"
 #include "core/compiler.hpp"
 #include "core/interpreter.hpp"
+#include "core/args_parser.hpp"
 
 
 int main(int argc, const char ** argv)

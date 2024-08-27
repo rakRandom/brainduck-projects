@@ -1,6 +1,6 @@
 #include "args_parser.hpp"
 
-int option_pos(int argc, const char ** argv, char * value, int flag = 0) 
+int option_pos(int argc, const char ** argv, const char value[], int flag = 0) 
 {
     if (flag == 0) {
         char long_arg[1024];
