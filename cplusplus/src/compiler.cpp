@@ -1,7 +1,8 @@
 #include "compiler.hpp"
 
 
-sz_t find_closed_bracket(const std::string &src, sz_t pos) {
+sz_t find_closed_bracket(const std::string &src, sz_t pos) 
+{
     sz_t openbt = 0;
 
     for (size_t i = pos + 1; i < src.size(); i++) {
@@ -24,7 +25,8 @@ sz_t find_closed_bracket(const std::string &src, sz_t pos) {
 }
 
 
-sz_t find_opened_bracket(const std::string &src, sz_t pos) {
+sz_t find_opened_bracket(const std::string &src, sz_t pos) 
+{
     sz_t closebt = 0;
 
     for (size_t i = pos - 1; i >= 0; i--) {
@@ -99,11 +101,10 @@ int compile_code(const std::string &src)
 
     // Adding the essential commands at the beggining of the file
     output_c << "#include <stdio.h>\n";
-    output_c << "#include <stdlib.h>\n";
-    output_c << "#include <stdint.h>\n";
     output_c << "int main() {\n";
-    output_c << "uint8_t *p = (uint8_t *) calloc(30000, 1);\n";
-    output_c << "if (p == NULL) { return 1; }\n";
+    output_c << "unsigned char d[65535];\n";
+    output_c << "unsigned short p = 0;\n";
+    output_c << "if (d == NULL) { return 1; }\n";
 
     // Adding the commands (c equivalents)
     for (const char &command : src)
@@ -111,28 +112,28 @@ int compile_code(const std::string &src)
         switch (command)
         {
         case '+':
-            output_c << "++*p;\n";
+            output_c << "d[p]++;\n";
             break;
         case '-':
-            output_c << "--*p;\n";
+            output_c << "d[p]--;\n";
             break;
         case '>':
-            output_c << "++p;\n";
+            output_c << "p++;\n";
             break;
         case '<':
-            output_c << "--p;\n";
+            output_c << "p--;\n";
             break;
         case '[':
-            output_c << "while (*p != 0) {\n";
+            output_c << "while (d[p] != 0) {\n";
             break;
         case ']':
             output_c << "}\n";
             break;
         case '.':
-            output_c << "putchar(*p);\n";
+            output_c << "putchar(d[p]);\n";
             break;
         case ',':
-            output_c << "*p = getchar();\n";
+            output_c << "d[p] = getchar();\n";
             break;
         
         default:
@@ -188,8 +189,6 @@ int compile(int argc, const char ** argv)
 
     // Happy message to the user, if the code was compiled successfully, of course
     std::cout << "Code compiled successfully: " << argv[1] << std::endl;
-
-    system(RUN_COMMAND);
     
     return 0;
 }

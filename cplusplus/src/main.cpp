@@ -22,11 +22,10 @@ int main(int argc, const char ** argv)
     int is_to_compile, is_to_interpret, filename_index;
 
     if (argc == 2) {
-        is_to_compile = 1;
+        is_to_compile = 0;
         is_to_interpret = 0;
         filename_index = 1;
-    }
-    else {
+    } else {
         is_to_compile = option_pos(argc, argv, "compile");
         is_to_interpret = option_pos(argc, argv, "interpret");
         filename_index = option_pos(argc, argv, "filename") + 1;
@@ -43,17 +42,24 @@ int main(int argc, const char ** argv)
     }
 
     // Execution
-    if (is_to_compile)
+    if (is_to_compile) {
         if(compile(argc, argv)) {
             std::cout << "Error: Error at compile time." << std::endl;
             return 3;
         }
-    
-    if (is_to_interpret)
+    } else if (is_to_interpret) {
         if(interpret(argc, argv)) {
             std::cout << "Error: Unsuccessful attempt to interpret the code." << std::endl;
             return 4;
         }
+    } else {
+        if(compile(argc, argv)) {
+            std::cout << "Error: Error at compile time." << std::endl;
+            return 3;
+        }
+        else
+            system(RUN_COMMAND);
+    }
 
     return 0;
 }
