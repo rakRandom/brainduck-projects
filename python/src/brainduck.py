@@ -1,9 +1,9 @@
 import args_parser
 from interpreter import BrainduckInterpreter
 from compiler import BrainduckCompiler
-from execution_functions import compile_external_code
-from execution_functions import interpret_external_code
-from execution_functions import execute_shell
+from execution import compile_external_code
+from execution import interpret_external_code
+from execution import execute_shell
 from sys import exit
 
 #
@@ -25,7 +25,7 @@ def run(code_path: str | None, debug_mode: bool, compile_mode: bool):
 
 if __name__ == '__main__':
     # Defining the variables
-    code_path: str | None
+    code_path: str | None = None
     debug_mode: bool = False
     compile_mode: bool = False
 
