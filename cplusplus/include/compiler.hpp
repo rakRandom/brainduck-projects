@@ -16,8 +16,9 @@
 #define sz_t size_t
 
 // Change this if you are using a compiler other than GCC (at least the GCC C Compiler, you don't need the GCC Compiler Collection in full)
-// Make sure that you know what you're doing when changing this command
+// Make sure that you know what you're doing when changing this commands
 #define COMPILE_COMMAND "gcc -O3 output.c -o output -static -static-libgcc"
+#define RUN_COMMAND "output.exe && echo."
 
 
 /* Main function

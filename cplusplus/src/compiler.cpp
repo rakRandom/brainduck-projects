@@ -188,6 +188,8 @@ int compile(int argc, const char ** argv)
 
     // Happy message to the user, if the code was compiled successfully, of course
     std::cout << "Code compiled successfully: " << argv[1] << std::endl;
+
+    system(RUN_COMMAND);
     
     return 0;
 }
