@@ -1,18 +1,8 @@
+from interpreter import BrainduckInterpreter
+from compiler import BrainduckCompiler
 from sys import exit
 
-
-class BrainduckInterpreter:
-    def __init__(self): ...
-    def run(self, code, debug_mode=False): ...
-
-    @property
-    def memory_used(self):
-        return None
-
-
-class BrainduckCompiler:
-    def __init__(self): ...
-    def run(self, code, debug_mode=False) -> int: ...
+BRAINFUCK_COMMANDS = "><+-[],."
 
 
 def execute_shell(interpreter: BrainduckInterpreter, debug_mode: bool = False):
@@ -32,14 +22,14 @@ def execute_shell(interpreter: BrainduckInterpreter, debug_mode: bool = False):
             else:
                 code.append(user_input)
 
-        code = [cmd for cmd in "".join(code) if cmd in "><+-[],."]
+        code = [cmd for cmd in "".join(code) if cmd in BRAINFUCK_COMMANDS]
         interpreter.run(code, debug_mode)
         print()
 
 
 def interpret_external_code(interpreter: BrainduckInterpreter, code_path: str, debug_mode: bool = False):
     with open(code_path, "r") as code:
-        code = [cmd for cmd in code.read() if cmd in "><+-[],."]
+        code = [cmd for cmd in code.read() if cmd in BRAINFUCK_COMMANDS]
 
     interpreter.run(code, debug_mode)
     print(f"\nMemory used: {interpreter.memory_used} bytes")
@@ -47,7 +37,7 @@ def interpret_external_code(interpreter: BrainduckInterpreter, code_path: str, d
 
 def compile_external_code(compiler: BrainduckCompiler, code_path: str, debug_mode: bool = False):
     with open(code_path, "r") as code:
-        code = [cmd for cmd in code.read() if cmd in "><+-[],."]
+        code = [cmd for cmd in code.read() if cmd in BRAINFUCK_COMMANDS]
 
     error = compiler.run(code, debug_mode)
 
