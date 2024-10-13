@@ -30,7 +30,9 @@ int main(int argc, const char ** argv)
         return 1;
     }
     if (filename[0] == '-') {
-        std::cout << "Error: Filename cannot be an option." << std::endl;
+        std::cout << "Error: Filename cannot be an option." << std::endl << 
+        "If you are using a mode flag (interpret/compile)," << std::endl << 
+        "use the `filename` flag to define the file name" << std::endl;
         return 2;
     }
 
