@@ -18,7 +18,7 @@
  * for now, it is just an extension of the main.cpp at the `src/` folder
  * that is executed based on a conditional
  */
-int interpret(int argc, const char ** argv);
+int interpret(const char * filename);
 
 
 #endif // INTERPRETER_HPP

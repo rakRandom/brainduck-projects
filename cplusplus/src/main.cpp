@@ -37,7 +37,7 @@ int main(int argc, const char ** argv)
     // Execution
     switch (mode) {
         case 0:
-            if(interpret(argc, argv)) {
+            if(interpret(filename)) {
                 std::cout << "Error: Unsuccessful attempt to interpret the code." << std::endl;
                 return 4;
             }
