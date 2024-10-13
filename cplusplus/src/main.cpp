@@ -1,19 +1,19 @@
-#include "core/compiler.hpp"
-#include "core/interpreter.hpp"
-#include "core/args_parser.hpp"
+#include "compiler.hpp"
+#include "interpreter.hpp"
+#include "args_parser.hpp"
 
 
 int main(int argc, const char ** argv)
 {
-    // Only show the help option
+    // Only show the help options
     if (option_pos(argc, argv, "help") && argc == 2) {
         std::cout << 
-        "[-c/--compile]            to compile the code" << std::endl << 
-        "[-i/--interpret]          to interpret the code" << std::endl << 
-        "[-f/--filename file_path] define where to find the file (required)" << std::endl << 
+        "[-c/--compile]            - to only compile the code" << std::endl << 
+        "[-i/--interpret]          - to only interpret the code" << std::endl << 
+        "[-f/--filename file_path] - define where to find the file (required)" << std::endl << 
         std::endl << 
-        "`brainduck.exe [filename]` to execute without any option." << std::endl << 
-        "Executing without options will only compile, without interpreting it, but if the compilation was successful, it will run automatically the compiled code" << 
+        "`brainduck_cpp.exe [filename]` to execute without any option." << std::endl << 
+        "Executing without options will compile the source code and run the compiled code" << 
         std::endl;
         return 0;
     }

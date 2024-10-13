@@ -1,6 +1,7 @@
 #include "args_parser.hpp"
+#include <iostream>
 
-int option_pos(int argc, const char ** argv, const char value[], int flag = 0) 
+int option_pos(int argc, const char ** argv, const char value[], int flag) 
 {
     if (flag == 0) {
         char long_arg[1024];
@@ -9,9 +10,10 @@ int option_pos(int argc, const char ** argv, const char value[], int flag = 0)
         sprintf_s(long_arg, "--%s", value);
         sprintf_s(short_arg, "-%c", value[0]);
 
-        for (int i = 1; i < argc; i++)
-            if (strcmp(argv[i], long_arg) || strcmp(argv[i], short_arg))
+        for (int i = 1; i < argc; i++) {
+            if (!strcmp(argv[i], long_arg) || !strcmp(argv[i], short_arg))
                 return i;
+        }
     }
 
     return 0;
