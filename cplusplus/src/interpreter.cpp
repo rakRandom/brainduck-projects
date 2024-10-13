@@ -1,54 +1,6 @@
 #include "interpreter.hpp"
 
 
-u16 find_closed_bracket(const char * cmds, u16 pos) 
-{
-    u16 openbt = 0;
-
-    for (size_t i = pos + 1; i < strlen(cmds); i++) {
-        switch (cmds[i]) {
-        case '[':
-            openbt++;
-            break;
-        case ']':
-            if (openbt == 0)
-                return (u16) i;
-            else
-                openbt--;
-            break;
-        
-        default: break;
-        }
-    }
-    return -1;
-}
-
-
-u16 find_opened_bracket(const char * cmds, u16 pos) 
-{
-    u16 closebt = 0;
-
-    for (size_t i = pos - 1; i >= 0; i--) {
-        switch (cmds[i]) {
-        case ']':
-            closebt++;
-            break;
-        case '[':
-            if (closebt == 0)
-                return (u16) i;
-            else
-                closebt--;
-            break;
-        
-        default: break;
-        }
-    }
-    return -1;
-}
-
-// =============================================================================
-
-
 // Only array to not be a vector, it's better that way
 char input[DEFAULT_BUFFER_SIZE];
 vector<char> commands(DEFAULT_BUFFER_SIZE);
@@ -70,7 +22,7 @@ void setup(const char * file_path)
     // Removing every character that isn't a brainfuck command (optimization)
     std::string code;
     code.reserve(raw_code.size());
-    for(uint32_t i = 0; i < raw_code.size(); ++i)
+    for(u32 i = 0; i < raw_code.size(); ++i)
         if (raw_code[i] == '>' || 
             raw_code[i] == '<' || 
             raw_code[i] == '+' || 

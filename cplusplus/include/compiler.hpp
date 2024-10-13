@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <cstring>
 
+#include "find_brackets.hpp"
 #include "types.h"
 
 // Change this if you are using a compiler other than GCC (at least the GCC C Compiler, you don't need the GCC Compiler Collection in full)
