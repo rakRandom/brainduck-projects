@@ -8,9 +8,12 @@ vector<u8> memory(MEMORY_SIZE);
 vector<u32> brackets_pos(DEFAULT_BUFFER_SIZE);
 u32 cell, cmd = 0;
 
-int interpret_code() {
-    while (cmd < commands.length() - 1) {
-        switch (commands.get(cmd)) {
+int interpret_code() 
+{
+    while (cmd < commands.length() - 1) 
+    {
+        switch (commands.get(cmd)) 
+        {
             /* Shift right */
             case '>':
                 cell++;

@@ -465,4 +465,4 @@ public:
     }
 };
 
-#endif // VECTOR_HPP
+#endif  // VECTOR_HPP

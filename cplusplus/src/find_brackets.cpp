@@ -4,8 +4,10 @@ uMX find_closed_bracket(const std::string &src, uMX pos)
 {
     uMX openbt = 0;
 
-    for (size_t i = pos + 1; i < src.size(); i++) {
-        switch (src[i]) {
+    for (size_t i = pos + 1; i < src.size(); i++) 
+    {
+        switch (src[i]) 
+        {
         case '[':
             openbt++;
             break;
@@ -28,8 +30,10 @@ uMX find_opened_bracket(const std::string &src, uMX pos)
 {
     uMX closebt = 0;
 
-    for (size_t i = pos - 1; i >= 0; i--) {
-        switch (src[i]) {
+    for (size_t i = pos - 1; i >= 0; i--) 
+    {
+        switch (src[i]) 
+        {
         case ']':
             closebt++;
             break;

@@ -21,4 +21,4 @@
 int interpret(const char * filename);
 
 
-#endif // INTERPRETER_HPP
+#endif  // INTERPRETER_HPP

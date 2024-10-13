@@ -1,6 +1,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+
 typedef char      i8;
 typedef short     i16;
 typedef int       i32;
@@ -13,4 +14,5 @@ typedef unsigned int       u32;
 typedef unsigned long      u64;
 typedef unsigned long long uMX;
 
-#endif
+
+#endif  // TYPES_H

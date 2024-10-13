@@ -16,4 +16,4 @@ uMX find_closed_bracket(const std::string &src, uMX pos);
 uMX find_opened_bracket(const std::string &src, uMX pos);
 
 
-#endif
+#endif  // FIND_BRACKETS_HPP

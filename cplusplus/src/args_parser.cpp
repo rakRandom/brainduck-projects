@@ -3,14 +3,16 @@
 
 int option_pos(int argc, const char ** argv, const char value[], int flag) 
 {
-    if (flag == 0) {
+    if (flag == 0) 
+    {
         char long_arg[1024];
         char short_arg[8];
 
         sprintf_s(long_arg, "--%s", value);
         sprintf_s(short_arg, "-%c", value[0]);
 
-        for (int i = 1; i < argc; i++) {
+        for (int i = 1; i < argc; i++) 
+        {
             if (!strcmp(argv[i], long_arg) || !strcmp(argv[i], short_arg))
                 return i;
         }
@@ -21,7 +23,8 @@ int option_pos(int argc, const char ** argv, const char value[], int flag)
 
 int show_help(int argc, const char ** argv)
 {
-    if (option_pos(argc, argv, "help") && argc == 2) {
+    if (option_pos(argc, argv, "help") && argc == 2) 
+    {
         std::cout << 
         "[-c/--compile]            - to only compile the code" << std::endl << 
         "[-i/--interpret]          - to only interpret the code" << std::endl << 
