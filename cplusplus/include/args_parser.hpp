@@ -10,4 +10,9 @@
  */
 int option_pos(int argc, const char ** argv, const char value[], int flag = 0);
 
+/* Shows the help text if it was called
+ *
+ */
+int show_help(int argc, const char ** argv);
+
 #endif  // ARGS_PARSER_HPP
