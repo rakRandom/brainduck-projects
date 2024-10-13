@@ -19,11 +19,9 @@
 
 
 /* Main function
- * Todo: change from "argc" and "argv" to the proper arguments
- * for now, it is just an extension of the main.cpp at the `src/` folder
- * that is executed based on a conditional
+ * Compiles the Brainfuck code at a `filename` file.
  */
-int compile(int argc, const char ** argv);
+int compile(const char * filename);
 
 
 #endif  // COMPILER_HPP

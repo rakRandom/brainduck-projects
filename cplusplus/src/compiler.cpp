@@ -107,32 +107,25 @@ int compile_code(const std::string &src)
 }
 
 
-int compile(int argc, const char ** argv) 
+int compile(const char * filename) 
 {
     std::string code = "";
 
-    // Error condition 1 - Not enough parameters, 2 is (currently) the only one accepted, .exe name and file path
-    if (argc != 2)
-    { 
-        std::cout << "Error: The only parameter accepted is the file path." << std::endl;
-        return 1;
-    }
-
-    // Error condition 2 - Cannot get the code (commands), mainly because the file path is wrong.
-    if (get_code(argv[1], code))
+    // Error condition 1 - Cannot get the code (commands), mainly because the file path is wrong.
+    if (get_code(filename, code))
     {
         std::cout << "Error: Cannot get the file content, check if the path is right." << std::endl;
         return 1;
     }
     
-    // Error condition 3 - Code sintax is wrong (brackets not in pair)
+    // Error condition 2 - Code sintax is wrong (brackets not in pair)
     if (is_sintax_wrong(code))
     {
         std::cout << "Error: Code sintax is wrong." << std::endl;
         return 1;
     }
 
-    // Error condition 4 - Cannot compile the code, mainly because the user doesn't have a C compiler
+    // Error condition 3 - Cannot compile the code, mainly because the user doesn't have a C compiler
     if (compile_code(code))
     {
         std::cout << "Error: The code cannot be compiled, check if the C compiler is properly installed." << std::endl;
@@ -140,7 +133,7 @@ int compile(int argc, const char ** argv)
     }
 
     // Happy message to the user, if the code was compiled successfully, of course
-    std::cout << "Code compiled successfully: " << argv[1] << std::endl;
+    std::cout << "Code compiled successfully: " << filename << std::endl;
     
     return 0;
 }

@@ -10,46 +10,57 @@ int main(int argc, const char ** argv)
         return 0;
 
     // Getting args and options
-    int is_to_compile, is_to_interpret, filename_index;
+    int mode = 2;
+    const char * filename = NULL;
 
     if (argc == 2) {
-        is_to_compile = 0;
-        is_to_interpret = 0;
-        filename_index = 1;
+        filename = argv[1];
     } else {
-        is_to_compile = option_pos(argc, argv, "compile");
-        is_to_interpret = option_pos(argc, argv, "interpret");
-        filename_index = option_pos(argc, argv, "filename") + 1;
+        if(option_pos(argc, argv, "compile"))
+            mode = 1;
+        if(option_pos(argc, argv, "interpret"))
+            mode = 0;
+        
+        filename = get_value(argc, argv, option_pos(argc, argv, "filename") + 1);
     }
 
     // Error tests
-    if (filename_index >= argc) {
+    if (filename == NULL) {
         std::cout << "Error: Filename not found in args." << std::endl;
         return 1;
     }
-    if (argv[filename_index][0] == '-') {
+    if (filename[0] == '-') {
         std::cout << "Error: Filename cannot be an option." << std::endl;
         return 2;
     }
 
     // Execution
-    if (is_to_compile) {
-        if(compile(argc, argv)) {
-            std::cout << "Error: Error at compile time." << std::endl;
-            return 3;
-        }
-    } else if (is_to_interpret) {
-        if(interpret(argc, argv)) {
-            std::cout << "Error: Unsuccessful attempt to interpret the code." << std::endl;
-            return 4;
-        }
-    } else {
-        if(compile(argc, argv)) {
-            std::cout << "Error: Error at compile time." << std::endl;
-            return 3;
-        }
-        else
-            system(RUN_COMMAND);
+    switch (mode) {
+        case 0:
+            if(interpret(argc, argv)) {
+                std::cout << "Error: Unsuccessful attempt to interpret the code." << std::endl;
+                return 4;
+            }
+            break;
+
+        case 1:
+            if(compile(filename)) {
+                std::cout << "Error: Error at compile time." << std::endl;
+                return 3;
+            }
+            break;
+        
+        case 2:
+            if(compile(filename)) {
+                std::cout << "Error: Error at compile time." << std::endl;
+                return 3;
+            }
+            else
+                system(RUN_COMMAND);
+            break;
+        
+        default:
+            break;
     }
 
     return 0;

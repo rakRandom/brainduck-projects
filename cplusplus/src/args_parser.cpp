@@ -31,8 +31,8 @@ int show_help(int argc, const char ** argv)
         "Executing without options will compile the source code and run the compiled code" << 
         std::endl;
 
-        return 0;
+        return 1;
     }
 
-    return 1;
+    return 0;
 }
