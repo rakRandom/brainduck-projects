@@ -7,10 +7,7 @@
 #include <fstream>  // create, read and write to files
 
 #include "vector.hpp"
-
-typedef uint8_t  u8;
-typedef uint16_t u16;
-typedef uint32_t u32;
+#include "types.h"
 
 #define DEFAULT_BUFFER_SIZE 65536
 #define MEMORY_SIZE 65536

@@ -9,11 +9,7 @@
 #include <cstdint>
 #include <cstring>
 
-#define u8 uint8_t
-#define u16 uint16_t
-#define u32 uint32_t
-#define u64 uint64_t
-#define sz_t size_t
+#include "types.h"
 
 // Change this if you are using a compiler other than GCC (at least the GCC C Compiler, you don't need the GCC Compiler Collection in full)
 // Make sure that you know what you're doing when changing this commands

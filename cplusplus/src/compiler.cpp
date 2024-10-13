@@ -1,9 +1,9 @@
 #include "compiler.hpp"
 
 
-sz_t find_closed_bracket(const std::string &src, sz_t pos) 
+uMX find_closed_bracket(const std::string &src, uMX pos) 
 {
-    sz_t openbt = 0;
+    uMX openbt = 0;
 
     for (size_t i = pos + 1; i < src.size(); i++) {
         switch (src[i]) {
@@ -12,7 +12,7 @@ sz_t find_closed_bracket(const std::string &src, sz_t pos)
             break;
         case ']':
             if (openbt == 0)
-                return (sz_t) i;
+                return (uMX) i;
             else
                 openbt--;
             break;
@@ -25,9 +25,9 @@ sz_t find_closed_bracket(const std::string &src, sz_t pos)
 }
 
 
-sz_t find_opened_bracket(const std::string &src, sz_t pos) 
+uMX find_opened_bracket(const std::string &src, uMX pos) 
 {
-    sz_t closebt = 0;
+    uMX closebt = 0;
 
     for (size_t i = pos - 1; i >= 0; i--) {
         switch (src[i]) {
@@ -36,7 +36,7 @@ sz_t find_opened_bracket(const std::string &src, sz_t pos)
             break;
         case '[':
             if (closebt == 0)
-                return (sz_t) i;
+                return (uMX) i;
             else
                 closebt--;
             break;
@@ -78,7 +78,7 @@ int get_code(const char file_path[], std::string &dest)
 
 int is_sintax_wrong(const std::string &src)
 {
-    for (sz_t i = 0; i < src.size() - 1; i++) 
+    for (uMX i = 0; i < src.size() - 1; i++) 
     {
         if (src[i] == '[')
             if (find_closed_bracket(src, i) == -1)
