@@ -1,8 +1,8 @@
-from modules.interpreter import BrainduckInterpreter
-from modules.compiler import BrainduckCompiler
-from modules.execution_functions import compile_external_code
-from modules.execution_functions import interpret_external_code
-from modules.execution_functions import execute_shell
+from interpreter import BrainduckInterpreter
+from compiler import BrainduckCompiler
+from execution_functions import compile_external_code
+from execution_functions import interpret_external_code
+from execution_functions import execute_shell
 from sys import argv, exit
 
 #

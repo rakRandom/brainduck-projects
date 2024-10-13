@@ -38,14 +38,14 @@ class BrainduckCompiler:
         self.c_code = '\n'.join(self.c_code)
 
         #
-        with open("to_compile.c", 'w') as file:
+        with open("../out/output.c", 'w') as file:
             file.write(self.c_code)
 
         #
-        error = system("gcc -O3 to_compile.c -o compiled -static -static-libgcc")
+        error = system("gcc -O3 ../out/output.c -o ../out/output -static -static-libgcc")
 
         #
-        if debug_mode is False and path.exists("to_compile.c"):
-            remove("to_compile.c")
+        if debug_mode is False and path.exists("../out/output.c"):
+            remove("../out/output.c")
 
         return error
