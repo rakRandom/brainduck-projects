@@ -1,4 +1,4 @@
-from modules.interpreter import BrainduckInterpreter
+from interpreter import BrainduckInterpreter
 
 
 if __name__ == "__main__":

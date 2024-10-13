@@ -5,7 +5,7 @@ Game's Source: https://pastebin.com/1E5US36E
 """
 
 
-from modules.interpreter import BrainduckInterpreter
+from interpreter import BrainduckInterpreter
 
 
 if __name__ == "__main__":
