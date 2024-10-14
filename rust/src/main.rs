@@ -2,5 +2,5 @@ mod interpreter;
 
 
 fn main() {
-    interpreter::run(&vec!['.', ',']);
+    interpreter::run(vec!['+', '+', '+', '+', '+', '+', '+', '+', '+', '+', '.']).unwrap();
 }
