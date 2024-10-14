@@ -99,7 +99,6 @@ i32 Compiler::compile_code()
 }
 
 
-
 i32 compile(const i8 * filename) 
 {
     Compiler compiler;

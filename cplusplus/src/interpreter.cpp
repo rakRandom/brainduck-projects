@@ -1,5 +1,6 @@
 #include "interpreter.hpp"
 
+
 i32 TuringMachine::get_code(std::string source_code) 
 {
     // Removing every character that isn't a brainfuck command (optimization)
@@ -40,6 +41,7 @@ i32 TuringMachine::get_code(std::string source_code)
 
     return 0;
 }
+
 
 i32 TuringMachine::execute_code() 
 {
