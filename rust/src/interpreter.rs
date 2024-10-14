@@ -38,13 +38,18 @@ impl TuringMachine
 
     pub fn get_code(&mut self, source_code: Vec<char>) 
     {
+        let mut polish_source_code: String = source_code.iter().collect();
+
+        polish_source_code = polish_source_code.replace("[-]", "0");
+        polish_source_code = polish_source_code.replace("[->+<]", "1");
+
         // Removing every character that isn't a brainfuck command (optimization)
-        for cmd in source_code 
+        for cmd in polish_source_code.chars() 
         {
             match cmd 
             {
-                '>' | '<' | '+' | '-' | 
-                '[' | ']' | ',' | '.' => 
+                '>' | '<' | '+' | '-' | '1' |
+                '[' | ']' | ',' | '.' | '0' => 
                 self.instructions.push(cmd),
                 
                 _ => {}
@@ -87,7 +92,7 @@ impl TuringMachine
                     }
                     self.data_pointer = (self.data_pointer.wrapping_add(counter)) % DEFAULT_BUFFER_SIZE as u32;
 
-                    self.instruction_pointer = self.instruction_pointer.wrapping_add(counter);
+                    self.instruction_pointer += counter;
                 },
                 
                 /* Shift left */
@@ -100,7 +105,7 @@ impl TuringMachine
 
                     self.data_pointer = (self.data_pointer.wrapping_sub(counter)) % DEFAULT_BUFFER_SIZE as u32;
 
-                    self.instruction_pointer = self.instruction_pointer.wrapping_add(counter);
+                    self.instruction_pointer += counter;
                 },
                 
                 /* Increase value */
@@ -114,7 +119,7 @@ impl TuringMachine
                     self.data[self.data_pointer as usize] = 
                     (self.data[self.data_pointer as usize].wrapping_add(counter as u8)) % ((2 as u32).pow(CELL_SIZE) - 1) as u8;
 
-                    self.instruction_pointer = self.instruction_pointer.wrapping_add(counter);
+                    self.instruction_pointer += counter;
                 },
                 
                 /* Decrease value */
@@ -128,7 +133,7 @@ impl TuringMachine
                     self.data[self.data_pointer as usize] = 
                     (self.data[self.data_pointer as usize].wrapping_sub(counter as u8)) % ((2 as u32).pow(CELL_SIZE) - 1) as u8;
 
-                    self.instruction_pointer = self.instruction_pointer.wrapping_add(counter);
+                    self.instruction_pointer += counter;
                 },
                 
                 /* Conditional Start */
@@ -137,7 +142,7 @@ impl TuringMachine
                         self.instruction_pointer = self.jump_preloader_buffer[self.instruction_pointer as usize];
                     } 
                     else {
-                        self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
+                        self.instruction_pointer += 1;
                     }
                 },
                 
@@ -147,7 +152,7 @@ impl TuringMachine
                         self.instruction_pointer = self.jump_preloader_buffer[self.instruction_pointer as usize];
                     } 
                     else {
-                        self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
+                        self.instruction_pointer += 1;
                     }
                 },
                 
@@ -167,7 +172,7 @@ impl TuringMachine
                     self.input_buffer[0] = '\0';
                     self.input_buffer.rotate_left(1);
     
-                    self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
+                    self.instruction_pointer += 1;
                 },
                 
                 /* Output data pointer value (ASCII) */
@@ -182,10 +187,26 @@ impl TuringMachine
                     }
                     
 
-                    self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
+                    self.instruction_pointer += 1;
+                },
+
+                /* Custom Command: Reset cell value */
+                '0' => {
+                    self.data[self.data_pointer as usize] = 0;
+                    self.instruction_pointer += 1;
+                },
+
+                /* Custom Command: Pass value to the next */
+                '1' => {
+                    let next_pointer = ((self.data_pointer.wrapping_add(1)) % DEFAULT_BUFFER_SIZE as u32) as usize;
+
+                    self.data[next_pointer] = self.data[next_pointer].wrapping_add(self.data[self.data_pointer as usize]);
+                    self.data[self.data_pointer as usize] = 0;
+                    
+                    self.instruction_pointer += 1;
                 },
                 
-                _ => self.instruction_pointer = self.instruction_pointer.wrapping_add(1)
+                _ => self.instruction_pointer += 1
             }
         }
 
