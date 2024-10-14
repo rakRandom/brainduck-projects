@@ -114,21 +114,21 @@ int compile(const char * filename)
     // Error condition 1 - Cannot get the code (commands), mainly because the file path is wrong.
     if (get_code(filename, code))
     {
-        std::cout << "Error: Cannot get the file content, check if the path is right." << std::endl;
+        std::cerr << "Error: Cannot get the file content, check if the path is right." << std::endl;
         return 1;
     }
     
     // Error condition 2 - Code sintax is wrong (brackets not in pair)
     if (is_sintax_wrong(code))
     {
-        std::cout << "Error: Code sintax is wrong." << std::endl;
+        std::cerr << "Error: Code sintax is wrong." << std::endl;
         return 1;
     }
 
     // Error condition 3 - Cannot compile the code, mainly because the user doesn't have a C compiler
     if (compile_code(code))
     {
-        std::cout << "Error: The code cannot be compiled, check if the C compiler is properly installed." << std::endl;
+        std::cerr << "Error: The code cannot be compiled, check if the C compiler is properly installed." << std::endl;
         return 1;
     }
 

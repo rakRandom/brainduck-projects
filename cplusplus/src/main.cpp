@@ -29,12 +29,12 @@ i32 main(i32 argc, const i8 ** argv)
     // Error tests
     if (filename == NULL) 
     {
-        std::cout << "Error: Filename not found in args." << std::endl;
+        std::cerr << "Error: Filename not found in args." << std::endl;
         return 1;
     }
     if (filename[0] == '-') 
     {
-        std::cout << "Error: Filename cannot be an option." << std::endl << 
+        std::cerr << "Error: Filename cannot be an option." << std::endl << 
         "If you are using a mode flag (interpret/compile)," << std::endl << 
         "use the `filename` flag to define the file name" << std::endl;
         return 2;
@@ -45,7 +45,7 @@ i32 main(i32 argc, const i8 ** argv)
         case 0:
             if(interpret(filename)) 
             {
-                std::cout << "Error: Unsuccessful attempt to interpret the code." << std::endl;
+                std::cerr << "Error: Unsuccessful attempt to interpret the code." << std::endl;
                 return 4;
             }
             break;
@@ -53,7 +53,7 @@ i32 main(i32 argc, const i8 ** argv)
         case 1:
             if(compile(filename)) 
             {
-                std::cout << "Error: Error at compile time." << std::endl;
+                std::cerr << "Error: Error at compile time." << std::endl;
                 return 3;
             }
             break;
@@ -61,7 +61,7 @@ i32 main(i32 argc, const i8 ** argv)
         case 2:
             if(compile(filename)) 
             {
-                std::cout << "Error: Error at compile time." << std::endl;
+                std::cerr << "Error: Error at compile time." << std::endl;
                 return 3;
             }
             else
