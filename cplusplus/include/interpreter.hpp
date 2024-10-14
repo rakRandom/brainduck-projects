@@ -44,9 +44,7 @@ class TuringMachine
 
 
 /* Main function
- * Todo: change from "argc" and "argv" to the proper arguments
- * for now, it is just an extension of the main.cpp at the `src/` folder
- * that is executed based on a conditional
+ * `filename` is the path to the source code file
  */
 i32 interpret(const i8 * filename);
 

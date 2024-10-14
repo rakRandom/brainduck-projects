@@ -9,22 +9,13 @@ i32 main(i32 argc, const i8 ** argv)
     if (show_help(argc, argv))
         return 0;
 
-    // Getting args and options
-    i32 mode = 2;
+    // Getting the file name
     const i8 * filename = NULL;
 
-    if (argc == 2) 
-    {
-        filename = argv[1];
-    } else 
-    {
-        if(option_pos(argc, argv, "compile"))
-            mode = 1;
-        if(option_pos(argc, argv, "interpret"))
-            mode = 0;
-        
-        filename = get_value(argc, argv, option_pos(argc, argv, "filename") + 1);
-    }
+    if (argc == 2)
+    {   filename = argv[1];   }
+    else 
+    {   filename = get_value(argc, argv, option_pos(argc, argv, "filename"));   }
 
     // Error tests
     if (filename == NULL) 
@@ -41,36 +32,31 @@ i32 main(i32 argc, const i8 ** argv)
     }
 
     // Execution
-    switch (mode) {
-        case 0:
-            if(interpret(filename)) 
-            {
-                std::cerr << "Error: Unsuccessful attempt to interpret the code." << std::endl;
-                return 4;
-            }
-            break;
-
-        case 1:
-            if(compile(filename)) 
-            {
-                std::cerr << "Error: Error at compile time." << std::endl;
-                return 3;
-            }
-            break;
-        
-        case 2:
-            if(compile(filename)) 
-            {
-                std::cerr << "Error: Error at compile time." << std::endl;
-                return 3;
-            }
-            else
-                system(RUN_COMMAND);
-            break;
-        
-        default:
-            break;
+    if (option_pos(argc, argv, "interpret"))  // If its to just interpret
+    {
+        if(interpret(filename)) 
+        {
+            std::cerr << "Error: Unsuccessful attempt to interpret the code." << std::endl;
+            return 4;
+        }
     }
+    else 
+    {
+        std::string output_name = "output";
+
+        if (get_value(argc, argv, option_pos(argc, argv, "output")) != NULL)
+            output_name = get_value(argc, argv, option_pos(argc, argv, "output"));
+
+        if(compile(filename, output_name))
+        {
+            std::cerr << "Error: Error at compile time." << std::endl;
+            return 3;
+        }
+
+        if (!option_pos(argc, argv, "compile"))  // If its not to just compile
+            system(output_name.append(RUN_COMMAND).c_str());
+    }
+
 
     return 0;
 }

@@ -35,9 +35,9 @@ i32 Compiler::get_code(std::string source_code)
 }
 
 
-i32 Compiler::compile_code()
+i32 Compiler::compile_code(std::string output_name)
 {
-    std::ofstream output_c("output.c");  // TODO: if is '-o' between the args, the arg next to him will be the .exe name
+    std::ofstream output_c(output_name + ".c");
 
     // Error condition - output.c cannot be created
     if (errno)
@@ -92,14 +92,14 @@ i32 Compiler::compile_code()
     output_c.close();
 
     // Compiling
-    if (system(COMPILE_COMMAND))
+    if (system(std::string(COMPILE_COMMAND).append(" " + output_name + ".c -o " + output_name).c_str()))
         return 1;
 
     return 0;
 }
 
 
-i32 compile(const i8 * filename) 
+i32 compile(std::string filename, std::string output_name) 
 {
     Compiler compiler;
 
@@ -129,7 +129,7 @@ i32 compile(const i8 * filename)
     }
 
     // Error condition 3 - Cannot compile the code, mainly because the user doesn't have a C compiler.
-    if (compiler.compile_code())
+    if (compiler.compile_code(output_name))
     {
         std::cerr << "Error: The code cannot be compiled, check if the C compiler is properly installed." << std::endl;
         return 1;

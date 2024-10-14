@@ -1,17 +1,17 @@
 #include "args_parser.hpp"
 #include <iostream>
 
-int option_pos(int argc, const char ** argv, const char value[], int flag) 
+i32 option_pos(i32 argc, const i8 ** argv, const i8 value[], i32 flag) 
 {
     if (flag == 0) 
     {
-        char long_arg[1024];
-        char short_arg[8];
+        i8 long_arg[1024];
+        i8 short_arg[8];
 
         sprintf_s(long_arg, "--%s", value);
         sprintf_s(short_arg, "-%c", value[0]);
 
-        for (int i = 1; i < argc; i++) 
+        for (i32 i = 1; i < argc; i++) 
         {
             if (!strcmp(argv[i], long_arg) || !strcmp(argv[i], short_arg))
                 return i;
@@ -21,7 +21,7 @@ int option_pos(int argc, const char ** argv, const char value[], int flag)
     return 0;
 }
 
-int show_help(int argc, const char ** argv)
+i32 show_help(i32 argc, const i8 ** argv)
 {
     if (option_pos(argc, argv, "help") && argc == 2) 
     {

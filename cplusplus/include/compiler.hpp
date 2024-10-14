@@ -14,8 +14,8 @@
 
 // Change this if you are using a compiler other than GCC (at least the GCC C Compiler, you don't need the GCC Compiler Collection in full)
 // Make sure that you know what you're doing when changing this commands
-#define COMPILE_COMMAND "gcc -O3 output.c -o output -static -static-libgcc"
-#define RUN_COMMAND "output.exe && echo."
+#define COMPILE_COMMAND "gcc -O3 -static -static-libgcc"
+#define RUN_COMMAND ".exe && echo."
 
 
 class Compiler {
@@ -23,14 +23,15 @@ class Compiler {
         std::string instructions;
 
         i32 get_code(std::string source_code);
-        i32 compile_code();
+        i32 compile_code(std::string output_name);
 };
 
 
 /* Main function
  * Compiles the Brainfuck code at a `filename` file.
+ * `output_name` is the output file name
  */
-i32 compile(const i8 * filename);
+i32 compile(std::string filename, std::string output_name);
 
 
 #endif  // COMPILER_HPP
