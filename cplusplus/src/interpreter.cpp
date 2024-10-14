@@ -141,7 +141,7 @@ i32 interpret(const i8 * filename)
     }
 
     in.seekg(0, std::ios::end);
-    size_t size = in.tellg();
+    uMX size = in.tellg();
     std::string raw_code(size, ' ');
     in.seekg(0);
     in.read(&raw_code[0], size); 

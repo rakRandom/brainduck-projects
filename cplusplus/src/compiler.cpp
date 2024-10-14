@@ -1,7 +1,7 @@
 #include "compiler.hpp"
 
 
-int get_code(const char file_path[], std::string &dest)
+i32 get_code(const i8 file_path[], std::string &dest)
 {
     std::string file_line;
     std::string raw_code;
@@ -19,7 +19,7 @@ int get_code(const char file_path[], std::string &dest)
 
     // Filtering non-command characters
     dest.reserve(raw_code.size());
-    for (char &ch : raw_code)
+    for (i8 &ch : raw_code)
         if (ch == '>' || ch == '<' || ch == '+' || ch == '-' || 
             ch == '[' || ch == ']' || ch == ',' || ch == '.')
             dest.append(1, ch); // Fastest way, '+=' is simpler but slightly slower
@@ -28,7 +28,7 @@ int get_code(const char file_path[], std::string &dest)
 }
 
 
-int is_sintax_wrong(const std::string &src)
+i32 is_sintax_wrong(const std::string &src)
 {
     for (uMX i = 0; i < src.size() - 1; i++) 
     {
@@ -43,7 +43,7 @@ int is_sintax_wrong(const std::string &src)
 }
 
 
-int compile_code(const std::string &src)
+i32 compile_code(const std::string &src)
 {
     std::ofstream output_c("output.c");  // TODO: if is '-o' between the args, the arg next to him will be the .exe name
 
@@ -59,7 +59,7 @@ int compile_code(const std::string &src)
     output_c << "if (d == NULL) { return 1; }\n";
 
     // Adding the commands (c equivalents)
-    for (const char &command : src)
+    for (const i8 &command : src)
     {
         switch (command)
         {
@@ -107,7 +107,7 @@ int compile_code(const std::string &src)
 }
 
 
-int compile(const char * filename) 
+i32 compile(const i8 * filename) 
 {
     std::string code = "";
 

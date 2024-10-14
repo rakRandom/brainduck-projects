@@ -21,7 +21,7 @@
 /* Main function
  * Compiles the Brainfuck code at a `filename` file.
  */
-int compile(const char * filename);
+i32 compile(const i8 * filename);
 
 
 #endif  // COMPILER_HPP
