@@ -6,6 +6,7 @@ use crate::find_brackets::*;
 const DEFAULT_BUFFER_SIZE: usize = 65536;
 const INPUT_BUFFER_SIZE: usize = 1024;
 const CELL_SIZE: u32 = 8;
+const MAX_FLUSH_HOLDER: u32 = 16;
 
 
 pub struct TuringMachine 
@@ -71,51 +72,63 @@ impl TuringMachine
             return;
         }
 
+        let mut flush_counter = 0;
+
         while self.instruction_pointer < self.instructions.len() as u32 
         {
             match self.instructions[self.instruction_pointer as usize]
             {
                 /* Shift right */
                 '>' => {
-                    self.data_pointer = (self.data_pointer.wrapping_add(1)) % DEFAULT_BUFFER_SIZE as u32;
+                    let mut counter = 1;
 
-                    self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
+                    while self.instructions[(self.instruction_pointer + counter) as usize] == '>' {
+                        counter += 1;
+                    }
+                    self.data_pointer = (self.data_pointer.wrapping_add(counter)) % DEFAULT_BUFFER_SIZE as u32;
+
+                    self.instruction_pointer = self.instruction_pointer.wrapping_add(counter);
                 },
                 
                 /* Shift left */
                 '<' => {
-                    self.data_pointer = (self.data_pointer.wrapping_sub(1)) % DEFAULT_BUFFER_SIZE as u32;
+                    let mut counter = 1;
 
-                    self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
+                    while self.instructions[(self.instruction_pointer + counter) as usize] == '<' {
+                        counter += 1;
+                    }
+
+                    self.data_pointer = (self.data_pointer.wrapping_sub(counter)) % DEFAULT_BUFFER_SIZE as u32;
+
+                    self.instruction_pointer = self.instruction_pointer.wrapping_add(counter);
                 },
                 
                 /* Increase value */
                 '+' => {
-                    let cell_value = self.data[self.data_pointer as usize];
+                    let mut counter = 1;
 
-                    if cell_value == ((2 as u32).pow(CELL_SIZE) - 1) as u8 {
-                        self.data[self.data_pointer as usize] = 0;
-                    }
-                    else {
-                        self.data[self.data_pointer as usize] += 1;
+                    while self.instructions[(self.instruction_pointer + counter) as usize] == '+' {
+                        counter += 1;
                     }
 
-                    self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
+                    self.data[self.data_pointer as usize] = 
+                    (self.data[self.data_pointer as usize].wrapping_add(counter as u8)) % ((2 as u32).pow(CELL_SIZE) - 1) as u8;
+
+                    self.instruction_pointer = self.instruction_pointer.wrapping_add(counter);
                 },
                 
                 /* Decrease value */
                 '-' => {
-                    let cell_value = self.data[self.data_pointer as usize];
+                    let mut counter = 1;
 
-                    if cell_value == 0 {
-                        self.data[self.data_pointer as usize] = 
-                        ((2 as u32).pow(CELL_SIZE) - 1) as u8;
-                    }
-                    else {
-                        self.data[self.data_pointer as usize] -= 1;
+                    while self.instructions[(self.instruction_pointer + counter) as usize] == '-' {
+                        counter += 1;
                     }
 
-                    self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
+                    self.data[self.data_pointer as usize] = 
+                    (self.data[self.data_pointer as usize].wrapping_sub(counter as u8)) % ((2 as u32).pow(CELL_SIZE) - 1) as u8;
+
+                    self.instruction_pointer = self.instruction_pointer.wrapping_add(counter);
                 },
                 
                 /* Conditional Start */
@@ -140,6 +153,8 @@ impl TuringMachine
                 
                 /* Input getter */
                 ',' => {
+                    std::io::stdout().flush().unwrap();
+                    
                     // Getting input if has none
                     if self.input_buffer[0] == '\0' {
                         todo!();
@@ -159,9 +174,13 @@ impl TuringMachine
                 '.' => {
                     print!("{}", self.data[self.data_pointer as usize] as char);
 
-                    std::io::stdout()
-                        .flush()
-                        .unwrap();
+                    if flush_counter >= MAX_FLUSH_HOLDER {
+                        std::io::stdout().flush().unwrap();
+                        flush_counter = 0;
+                    } else {
+                        flush_counter += 1;
+                    }
+                    
 
                     self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
                 },
@@ -169,6 +188,8 @@ impl TuringMachine
                 _ => self.instruction_pointer = self.instruction_pointer.wrapping_add(1)
             }
         }
+
+        std::io::stdout().flush().unwrap();
     }
 }
 
