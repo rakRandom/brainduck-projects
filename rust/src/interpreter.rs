@@ -1,53 +1,6 @@
-use std::{fmt::Error, io::Write, u32};
+use std::{fmt::Error, io::Write};
 
-
-fn find_closed_bracket(list: &String, pos: usize) -> u32 {
-    let mut openbt = 0;
-
-    for i in (pos + 1)..list.chars().count()
-    {
-        match list.chars().nth(i).unwrap() 
-        {
-            '[' =>  openbt += 1,
-
-            ']' => {
-                if openbt == 0 {
-                    return i as u32;
-                } else {
-                    openbt -= 1;
-                }
-            }
-            
-            _ => {}
-        }
-    }
-
-    u32::MAX
-}
-
-fn find_opened_bracket(list: &String, pos: usize) -> u32 {
-    let mut closebt = 0;
-
-    for i in (pos - 1)..0 
-    {
-        match list.chars().nth(i).unwrap()
-        {
-            ']' =>  closebt += 1,
-
-            '[' => {
-                if closebt == 0 {
-                    return i as u32;
-                } else {
-                    closebt -= 1;
-                }
-            },
-            
-            _ => {}
-        }
-    }
-
-    u32::MAX
-}
+use crate::find_brackets::*;
 
 
 const DEFAULT_BUFFER_SIZE: usize = 65536;
@@ -60,7 +13,7 @@ pub struct TuringMachine
     input_buffer: [char; INPUT_BUFFER_SIZE],
     instructions: String,
     data: [u8; DEFAULT_BUFFER_SIZE],
-    jump_preloader_buffer: Vec<u32>,  // Brackets positions
+    jump_preloader_buffer: [u32; DEFAULT_BUFFER_SIZE],  // Brackets positions
 
     data_pointer: u32,
     instruction_pointer: u32,
@@ -76,31 +29,7 @@ impl TuringMachine
             input_buffer: ['\0'; INPUT_BUFFER_SIZE],
             instructions: "".to_string(),
             data: [0; DEFAULT_BUFFER_SIZE],
-            jump_preloader_buffer: Vec::new(),
-            data_pointer: 0,
-            instruction_pointer: 0
-        }
-    }
-
-    pub fn from(source_code: Option<String>) -> TuringMachine 
-    {
-        let jump_preloader_buffer = Vec::<u32>::new();
-
-        match source_code 
-        {
-            None => {},
-            Some(_code) => 
-            {
-                todo!();
-            }
-        }
-
-        TuringMachine 
-        {
-            input_buffer: ['\0'; INPUT_BUFFER_SIZE],
-            instructions: "".to_string(),
-            data: [0; DEFAULT_BUFFER_SIZE],
-            jump_preloader_buffer,
+            jump_preloader_buffer: [0; DEFAULT_BUFFER_SIZE],
             data_pointer: 0,
             instruction_pointer: 0
         }
@@ -126,19 +55,9 @@ impl TuringMachine
         {
             match self.instructions.chars().nth(command).unwrap() 
             {
-                '[' => 
-                self.jump_preloader_buffer[command] = 
-                find_closed_bracket(
-                    &self.instructions, 
-                    command
-                ),
+                '[' => self.jump_preloader_buffer[command] = find_closed_bracket(&self.instructions, command),
                 
-                ']' => 
-                self.jump_preloader_buffer[command] = 
-                find_opened_bracket(
-                    &self.instructions, 
-                    command
-                ),
+                ']' => self.jump_preloader_buffer[command] = find_opened_bracket(&self.instructions, command),
                 
                 _ => {}
             }
@@ -154,10 +73,7 @@ impl TuringMachine
 
         while self.instruction_pointer < self.instructions.chars().count() as u32 
         {
-            match self.instructions
-                    .chars().nth(
-                        self.instruction_pointer as usize
-                    ).unwrap() 
+            match self.instructions.chars().nth(self.instruction_pointer as usize).unwrap() 
             {
                 /* Shift right */
                 '>' => {
@@ -214,7 +130,7 @@ impl TuringMachine
                     }
                     else 
                     {
-                        self.data[self.data_pointer as usize] += 1;
+                        self.data[self.data_pointer as usize] -= 1;
                     }
 
                     self.instruction_pointer = self.instruction_pointer.wrapping_add(1);

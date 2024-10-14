@@ -1,6 +1,9 @@
 mod interpreter;
+mod find_brackets;
+mod extractor;
 
 
 fn main() {
-    interpreter::run("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.".chars().collect()).unwrap();
+
+    interpreter::run(extractor::get_code_from_file("./src/neo.bf".to_string())).unwrap();
 }
