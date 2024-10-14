@@ -1,6 +1,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+typedef bool      bit;
 
 typedef char      i8;
 typedef short     i16;

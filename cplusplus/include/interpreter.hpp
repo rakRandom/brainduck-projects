@@ -26,12 +26,15 @@ class TuringMachine
         u32 instruction_pointer;
 
     public:
+        bit debug_mode;
+
         TuringMachine() : instructions(""), data(MEMORY_SIZE, 0), jump_preloader_buffer(DEFAULT_BUFFER_SIZE, 0) {
             std::memset(input_buffer, 0, DEFAULT_BUFFER_SIZE);
 
             instructions.reserve(DEFAULT_BUFFER_SIZE);
             data_pointer = 0;
             instruction_pointer = 0;
+            debug_mode = false;
         }
 
         /* Gets the final code, faster and lighter, based on a source code
@@ -46,7 +49,7 @@ class TuringMachine
 /* Main function
  * `filename` is the path to the source code file
  */
-i32 interpret(const i8 * filename);
+i32 interpret(const i8 * filename, i32 debug_flag);
 
 
 #endif  // INTERPRETER_HPP

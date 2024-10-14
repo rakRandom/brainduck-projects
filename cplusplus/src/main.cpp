@@ -5,7 +5,7 @@
 
 i32 main(i32 argc, const i8 ** argv)
 {
-    // Only show the help options
+    // Only show the help options, if it was required
     if (show_help(argc, argv))
         return 0;
 
@@ -34,7 +34,7 @@ i32 main(i32 argc, const i8 ** argv)
     // Execution
     if (option_pos(argc, argv, "interpret"))  // If its to just interpret
     {
-        if(interpret(filename)) 
+        if(interpret(filename, option_pos(argc, argv, "debug"))) 
         {
             std::cerr << "Error: Unsuccessful attempt to interpret the code." << std::endl;
             return 4;

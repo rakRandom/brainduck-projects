@@ -107,7 +107,10 @@ i32 TuringMachine::execute_code()
             
             /* Output machine data pointer value (ASCII) */
             case '.':
-                std::cout << (i8) data.at(data_pointer);
+                if (debug_mode)
+                    std::cout << (i32) data.at(data_pointer) << std::endl;
+                else
+                    std::cout << (i8) data.at(data_pointer);
                 instruction_pointer++;
                 break;
             
@@ -121,7 +124,7 @@ i32 TuringMachine::execute_code()
 }
 
 
-i32 interpret(const i8 * filename) 
+i32 interpret(const i8 * filename, i32 debug_flag) 
 {
     // Checking if the filename is NULL
     if (filename[0] == '\0') 
@@ -132,6 +135,8 @@ i32 interpret(const i8 * filename)
 
     // Creating the machine
     TuringMachine machine;
+
+    machine.debug_mode = debug_flag != 0;
 
     // Getting the file content
     std::ifstream in(filename);
