@@ -3,15 +3,15 @@
 #include "args_parser.hpp"
 
 
-int main(int argc, const char ** argv)
+i32 main(i32 argc, const i8 ** argv)
 {
     // Only show the help options
     if (show_help(argc, argv))
         return 0;
 
     // Getting args and options
-    int mode = 2;
-    const char * filename = NULL;
+    i32 mode = 2;
+    const i8 * filename = NULL;
 
     if (argc == 2) 
     {
