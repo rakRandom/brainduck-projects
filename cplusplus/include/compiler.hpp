@@ -21,9 +21,12 @@
 class Compiler {
     public:
         std::string instructions;
+        bit debug_mode;
 
         i32 get_code(std::string source_code);
         i32 compile_code(std::string output_name);
+
+        Compiler() : instructions(""), debug_mode(false) {}
 };
 
 
@@ -31,7 +34,7 @@ class Compiler {
  * Compiles the Brainfuck code at a `filename` file.
  * `output_name` is the output file name
  */
-i32 compile(std::string filename, std::string output_name);
+i32 compile(std::string filename, std::string output_name, i32 debug_flag);
 
 
 #endif  // COMPILER_HPP

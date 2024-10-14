@@ -47,7 +47,7 @@ i32 main(i32 argc, const i8 ** argv)
         if (get_value(argc, argv, option_pos(argc, argv, "output")) != NULL)
             output_name = get_value(argc, argv, option_pos(argc, argv, "output"));
 
-        if(compile(filename, output_name))
+        if(compile(filename, output_name, option_pos(argc, argv, "debug")))
         {
             std::cerr << "Error: Error at compile time." << std::endl;
             return 3;

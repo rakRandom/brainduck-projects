@@ -74,7 +74,7 @@ i32 Compiler::compile_code(std::string output_name)
             output_c << "}\n";
             break;
         case '.':
-            output_c << "putchar(d[p]);\n";
+            output_c << ((debug_mode) ? "printf(\"%d\\n\", d[p]);\n" : "putchar(d[p]);\n");
             break;
         case ',':
             output_c << "d[p] = getchar();\n";
@@ -99,9 +99,11 @@ i32 Compiler::compile_code(std::string output_name)
 }
 
 
-i32 compile(std::string filename, std::string output_name) 
+i32 compile(std::string filename, std::string output_name, i32 debug_flag) 
 {
     Compiler compiler;
+
+    compiler.debug_mode = debug_flag != 0;
 
     // Getting the file content
     std::string file_line;
