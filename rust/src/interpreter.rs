@@ -1,8 +1,53 @@
-use std::{fmt::Error, io::Write};
+use std::{fmt::Error, io::Write, u32};
 
 
-fn find_closed_bracket(_list: &String, _index: usize) -> u32 {0}
-fn find_opened_bracket(_list: &String, _index: usize) -> u32 {0}
+fn find_closed_bracket(list: &String, pos: usize) -> u32 {
+    let mut openbt = 0;
+
+    for i in (pos + 1)..list.chars().count()
+    {
+        match list.chars().nth(i).unwrap() 
+        {
+            '[' =>  openbt += 1,
+
+            ']' => {
+                if openbt == 0 {
+                    return i as u32;
+                } else {
+                    openbt -= 1;
+                }
+            }
+            
+            _ => {}
+        }
+    }
+
+    u32::MAX
+}
+
+fn find_opened_bracket(list: &String, pos: usize) -> u32 {
+    let mut closebt = 0;
+
+    for i in (pos - 1)..0 
+    {
+        match list.chars().nth(i).unwrap()
+        {
+            ']' =>  closebt += 1,
+
+            '[' => {
+                if closebt == 0 {
+                    return i as u32;
+                } else {
+                    closebt -= 1;
+                }
+            },
+            
+            _ => {}
+        }
+    }
+
+    u32::MAX
+}
 
 
 const DEFAULT_BUFFER_SIZE: usize = 65536;
@@ -77,7 +122,7 @@ impl TuringMachine
         }
 
         // Getting all the brackets pairs
-        for command in 0..self.instructions.len() 
+        for command in 0..self.instructions.chars().count() 
         {
             match self.instructions.chars().nth(command).unwrap() 
             {
@@ -107,7 +152,7 @@ impl TuringMachine
             return;
         }
 
-        while self.instruction_pointer < (self.instructions.len() - 1) as u32 
+        while self.instruction_pointer < self.instructions.chars().count() as u32 
         {
             match self.instructions
                     .chars().nth(
@@ -231,7 +276,7 @@ impl TuringMachine
                         "{}", 
                         *self.data.get(
                             self.data_pointer as usize
-                        ).unwrap());
+                        ).unwrap() as char);
 
                     std::io::stdout()
                         .flush()
