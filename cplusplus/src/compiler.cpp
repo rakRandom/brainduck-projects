@@ -1,49 +1,41 @@
 #include "compiler.hpp"
 
 
-i32 get_code(const i8 file_path[], std::string &dest)
+i32 Compiler::get_code(std::string source_code)
 {
-    std::string file_line;
-    std::string raw_code;
-    std::ifstream file(file_path);
-
-    // Error condition - File path is wrong or simply the file cannot be opened
-    if (errno)
-        return 1;
-    
-    // Getting file content
-    while(std::getline(file, file_line))
-        raw_code.append(file_line);
-
-    file.close();
-
     // Filtering non-command characters
-    dest.reserve(raw_code.size());
-    for (i8 &ch : raw_code)
-        if (ch == '>' || ch == '<' || ch == '+' || ch == '-' || 
-            ch == '[' || ch == ']' || ch == ',' || ch == '.')
-            dest.append(1, ch); // Fastest way, '+=' is simpler but slightly slower
-
-    return 0;
-}
-
-
-i32 is_sintax_wrong(const std::string &src)
-{
-    for (uMX i = 0; i < src.size() - 1; i++) 
+    instructions.reserve(source_code.size());
+    for (i8 &ch : source_code)
+        switch (ch) {
+            case '>':
+            case '<':
+            case '+':
+            case '-':
+            case '[':
+            case ']':
+            case ',':
+            case '.':
+                instructions.append(1, ch);  // Fastest way, '+=' is simpler but slightly slower
+            
+            default:
+                break;
+        }
+    
+    for (uMX i = 0; i < instructions.size() - 1; i++) 
     {
-        if (src[i] == '[')
-            if (find_closed_bracket(src, i) == -1)
+        if (instructions[i] == '[')
+            if (find_closed_bracket(instructions, i) == -1)
                 return 1;
-        else if (src[i] == ']')
-            if (find_opened_bracket(src, i) == -1)
+        else if (instructions[i] == ']')
+            if (find_opened_bracket(instructions, i) == -1)
                 return 1;
     }
+
     return 0;
 }
 
 
-i32 compile_code(const std::string &src)
+i32 Compiler::compile_code()
 {
     std::ofstream output_c("output.c");  // TODO: if is '-o' between the args, the arg next to him will be the .exe name
 
@@ -59,7 +51,7 @@ i32 compile_code(const std::string &src)
     output_c << "if (d == NULL) { return 1; }\n";
 
     // Adding the commands (c equivalents)
-    for (const i8 &command : src)
+    for (const i8 &command : instructions)
     {
         switch (command)
         {
@@ -107,26 +99,38 @@ i32 compile_code(const std::string &src)
 }
 
 
+
 i32 compile(const i8 * filename) 
 {
-    std::string code = "";
+    Compiler compiler;
 
-    // Error condition 1 - Cannot get the code (commands), mainly because the file path is wrong.
-    if (get_code(filename, code))
+    // Getting the file content
+    std::string file_line;
+    std::string raw_code;
+    std::ifstream file(filename);
+
+    // Error condition 1 - File path is wrong or simply the file cannot be opened
+    if (errno)
     {
         std::cerr << "Error: Cannot get the file content, check if the path is right." << std::endl;
         return 1;
     }
     
-    // Error condition 2 - Code sintax is wrong (brackets not in pair)
-    if (is_sintax_wrong(code))
+    // Getting file content
+    while(std::getline(file, file_line))
+        raw_code.append(file_line);
+
+    file.close();
+
+    // Error condition 2 - Cannot get the code (commands).
+    if (compiler.get_code(raw_code))
     {
-        std::cerr << "Error: Code sintax is wrong." << std::endl;
+        std::cerr << "Error: The code sintax is wrong." << std::endl;
         return 1;
     }
 
-    // Error condition 3 - Cannot compile the code, mainly because the user doesn't have a C compiler
-    if (compile_code(code))
+    // Error condition 3 - Cannot compile the code, mainly because the user doesn't have a C compiler.
+    if (compiler.compile_code())
     {
         std::cerr << "Error: The code cannot be compiled, check if the C compiler is properly installed." << std::endl;
         return 1;

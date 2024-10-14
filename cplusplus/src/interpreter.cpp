@@ -14,7 +14,7 @@ i32 TuringMachine::get_code(std::string source_code)
             case ']':
             case ',':
             case '.':
-                instructions += source_code[i];
+                instructions += source_code[i];  // Todo: change from '+=' to '.append()'
             
             default:
                 break;

@@ -18,6 +18,15 @@
 #define RUN_COMMAND "output.exe && echo."
 
 
+class Compiler {
+    public:
+        std::string instructions;
+
+        i32 get_code(std::string source_code);
+        i32 compile_code();
+};
+
+
 /* Main function
  * Compiles the Brainfuck code at a `filename` file.
  */
