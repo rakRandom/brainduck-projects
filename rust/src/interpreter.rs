@@ -11,7 +11,7 @@ const CELL_SIZE: u32 = 8;
 pub struct TuringMachine 
 {
     input_buffer: [char; INPUT_BUFFER_SIZE],
-    instructions: String,
+    instructions: Vec<char>,
     data: [u8; DEFAULT_BUFFER_SIZE],
     jump_preloader_buffer: [u32; DEFAULT_BUFFER_SIZE],  // Brackets positions
 
@@ -27,7 +27,7 @@ impl TuringMachine
         TuringMachine 
         {
             input_buffer: ['\0'; INPUT_BUFFER_SIZE],
-            instructions: "".to_string(),
+            instructions: Vec::new(),
             data: [0; DEFAULT_BUFFER_SIZE],
             jump_preloader_buffer: [0; DEFAULT_BUFFER_SIZE],
             data_pointer: 0,
@@ -51,9 +51,9 @@ impl TuringMachine
         }
 
         // Getting all the brackets pairs
-        for command in 0..self.instructions.chars().count() 
+        for command in 0..self.instructions.len() 
         {
-            match self.instructions.chars().nth(command).unwrap() 
+            match self.instructions[command]
             {
                 '[' => self.jump_preloader_buffer[command] = find_closed_bracket(&self.instructions, command),
                 
@@ -71,34 +71,20 @@ impl TuringMachine
             return;
         }
 
-        while self.instruction_pointer < self.instructions.chars().count() as u32 
+        while self.instruction_pointer < self.instructions.len() as u32 
         {
-            match self.instructions.chars().nth(self.instruction_pointer as usize).unwrap() 
+            match self.instructions[self.instruction_pointer as usize]
             {
                 /* Shift right */
                 '>' => {
-                    if self.data_pointer == (DEFAULT_BUFFER_SIZE - 1) as u32 
-                    {
-                        self.data_pointer = 0;
-                    }
-                    else 
-                    {
-                        self.data_pointer += 1;
-                    }
+                    self.data_pointer = (self.data_pointer.wrapping_add(1)) % DEFAULT_BUFFER_SIZE as u32;
 
                     self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
                 },
                 
                 /* Shift left */
                 '<' => {
-                    if self.data_pointer == 0 
-                    {
-                        self.data_pointer = (DEFAULT_BUFFER_SIZE - 1) as u32;
-                    }
-                    else 
-                    {
-                        self.data_pointer -= 1;
-                    }
+                    self.data_pointer = (self.data_pointer.wrapping_sub(1)) % DEFAULT_BUFFER_SIZE as u32;
 
                     self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
                 },
@@ -107,12 +93,10 @@ impl TuringMachine
                 '+' => {
                     let cell_value = self.data[self.data_pointer as usize];
 
-                    if cell_value == ((2 as u32).pow(CELL_SIZE) - 1) as u8 
-                    {
+                    if cell_value == ((2 as u32).pow(CELL_SIZE) - 1) as u8 {
                         self.data[self.data_pointer as usize] = 0;
                     }
-                    else 
-                    {
+                    else {
                         self.data[self.data_pointer as usize] += 1;
                     }
 
@@ -123,13 +107,11 @@ impl TuringMachine
                 '-' => {
                     let cell_value = self.data[self.data_pointer as usize];
 
-                    if cell_value == 0 
-                    {
+                    if cell_value == 0 {
                         self.data[self.data_pointer as usize] = 
                         ((2 as u32).pow(CELL_SIZE) - 1) as u8;
                     }
-                    else 
-                    {
+                    else {
                         self.data[self.data_pointer as usize] -= 1;
                     }
 
@@ -138,32 +120,20 @@ impl TuringMachine
                 
                 /* Conditional Start */
                 '[' => {
-                    if *self.data.get(self.data_pointer as usize).unwrap() == 0 
-                    {
-                        self.instruction_pointer = 
-                            *self.jump_preloader_buffer
-                                .get(
-                                    self.instruction_pointer as usize
-                                ).unwrap();
+                    if self.data[self.data_pointer as usize] == 0 {
+                        self.instruction_pointer = self.jump_preloader_buffer[self.instruction_pointer as usize];
                     } 
-                    else 
-                    {
+                    else {
                         self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
                     }
                 },
                 
                 /* Conditional end */
                 ']' => {
-                    if *self.data.get(self.data_pointer as usize).unwrap() != 0 
-                    {
-                        self.instruction_pointer =  
-                            *self.jump_preloader_buffer
-                                .get(
-                                    self.instruction_pointer as usize
-                                ).unwrap();
+                    if self.data[self.data_pointer as usize] != 0 {
+                        self.instruction_pointer = self.jump_preloader_buffer[self.instruction_pointer as usize];
                     } 
-                    else 
-                    {
+                    else {
                         self.instruction_pointer = self.instruction_pointer.wrapping_add(1);
                     }
                 },
@@ -171,8 +141,7 @@ impl TuringMachine
                 /* Input getter */
                 ',' => {
                     // Getting input if has none
-                    if self.input_buffer[0] == '\0' 
-                    {
+                    if self.input_buffer[0] == '\0' {
                         todo!();
                     }
     
@@ -188,11 +157,7 @@ impl TuringMachine
                 
                 /* Output data pointer value (ASCII) */
                 '.' => {
-                    print!(
-                        "{}", 
-                        *self.data.get(
-                            self.data_pointer as usize
-                        ).unwrap() as char);
+                    print!("{}", self.data[self.data_pointer as usize] as char);
 
                     std::io::stdout()
                         .flush()

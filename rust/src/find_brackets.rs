@@ -1,9 +1,9 @@
-pub fn find_closed_bracket(list: &String, pos: usize) -> u32 {
+pub fn find_closed_bracket(list: &Vec<char>, pos: usize) -> u32 {
     let mut openbt = 0;
 
-    for i in (pos + 1)..list.chars().count()
+    for i in (pos + 1)..list.len()
     {
-        match list.chars().nth(i).unwrap() 
+        match list[i]
         {
             '[' =>  openbt += 1,
 
@@ -22,12 +22,12 @@ pub fn find_closed_bracket(list: &String, pos: usize) -> u32 {
     u32::MAX
 }
 
-pub fn find_opened_bracket(list: &String, pos: usize) -> u32 {
+pub fn find_opened_bracket(list: &Vec<char>, pos: usize) -> u32 {
     let mut closebt = 0;
 
     for i in (0..(pos - 1)).rev()
     {
-        match list.chars().nth(i).unwrap()
+        match list[i]
         {
             ']' =>  closebt += 1,
 
