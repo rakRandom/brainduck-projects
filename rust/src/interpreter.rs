@@ -77,6 +77,7 @@ impl TuringMachine
         }
 
         let mut flush_counter = 0;
+        let mut input_buffer_vector: Vec<u8>;
 
         while self.instruction_pointer < self.instructions.len() as u32 
         {
@@ -155,7 +156,7 @@ impl TuringMachine
                     }
                 },
                 
-                /* Input getter */
+                /* Input getter - TODO: Add a counter to improve performance */
                 ',' => {
                     std::io::stdout().flush().unwrap();
                     
@@ -163,18 +164,18 @@ impl TuringMachine
                     while self.input_buffer.is_empty() {
                         std::io::stdin().read_line(&mut self.input_buffer).unwrap();
                     }
-
-                    let mut temp: Vec<u8> = self.input_buffer.bytes().collect();
     
+                    input_buffer_vector = self.input_buffer.bytes().collect::<Vec<u8>>();
+
                     // Defining the data pointer value as the first character of the input
-                    self.data[self.data_pointer as usize] = temp[0];
+                    self.data[self.data_pointer as usize] = input_buffer_vector[0];
                 
                     // Shifting the array to the left by 1
-                    temp[0] = 0;
-                    temp.rotate_left(1);
+                    input_buffer_vector[0] = 0;
+                    input_buffer_vector.rotate_left(1);
 
-                    self.input_buffer = String::from_utf8(temp).unwrap();
-    
+                    self.input_buffer = String::from_utf8(input_buffer_vector.to_vec()).unwrap();
+
                     self.instruction_pointer += 1;
                 },
                 
