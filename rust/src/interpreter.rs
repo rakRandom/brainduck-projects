@@ -4,14 +4,13 @@ use crate::find_brackets::*;
 
 
 const DEFAULT_BUFFER_SIZE: usize = 65536;
-const INPUT_BUFFER_SIZE: usize = 1024;
 const CELL_SIZE: u32 = 8;
 const MAX_FLUSH_HOLDER: u32 = 16;
 
 
 pub struct TuringMachine 
 {
-    input_buffer: [char; INPUT_BUFFER_SIZE],
+    input_buffer: String,
     instructions: Vec<char>,
     data: [u8; DEFAULT_BUFFER_SIZE],
     jump_preloader_buffer: [u32; DEFAULT_BUFFER_SIZE],  // Brackets positions
@@ -27,7 +26,7 @@ impl TuringMachine
     {
         TuringMachine 
         {
-            input_buffer: ['\0'; INPUT_BUFFER_SIZE],
+            input_buffer: String::new(),
             instructions: Vec::new(),
             data: [0; DEFAULT_BUFFER_SIZE],
             jump_preloader_buffer: [0; DEFAULT_BUFFER_SIZE],
@@ -161,16 +160,20 @@ impl TuringMachine
                     std::io::stdout().flush().unwrap();
                     
                     // Getting input if has none
-                    if self.input_buffer[0] == '\0' {
-                        todo!();
+                    while self.input_buffer.is_empty() {
+                        std::io::stdin().read_line(&mut self.input_buffer).unwrap();
                     }
+
+                    let mut temp: Vec<u8> = self.input_buffer.bytes().collect();
     
                     // Defining the data pointer value as the first character of the input
-                    self.data[self.data_pointer as usize] = self.input_buffer[0] as u8;
+                    self.data[self.data_pointer as usize] = temp[0];
                 
                     // Shifting the array to the left by 1
-                    self.input_buffer[0] = '\0';
-                    self.input_buffer.rotate_left(1);
+                    temp[0] = 0;
+                    temp.rotate_left(1);
+
+                    self.input_buffer = String::from_utf8(temp).unwrap();
     
                     self.instruction_pointer += 1;
                 },
@@ -210,6 +213,7 @@ impl TuringMachine
             }
         }
 
+        print!("\n");
         std::io::stdout().flush().unwrap();
     }
 }
