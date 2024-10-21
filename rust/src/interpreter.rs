@@ -87,7 +87,7 @@ impl TuringMachine
                 '>' => {
                     let mut counter = 1;
 
-                    while self.instructions[(self.instruction_pointer + counter) as usize] == '>' {
+                    while *self.instructions.get((self.instruction_pointer + counter) as usize).unwrap_or(&'\0') == '>' {
                         counter += 1;
                     }
                     self.data_pointer = (self.data_pointer.wrapping_add(counter)) % DEFAULT_BUFFER_SIZE as u32;
@@ -99,7 +99,7 @@ impl TuringMachine
                 '<' => {
                     let mut counter = 1;
 
-                    while self.instructions[(self.instruction_pointer + counter) as usize] == '<' {
+                    while *self.instructions.get((self.instruction_pointer + counter) as usize).unwrap_or(&'\0') == '<' {
                         counter += 1;
                     }
 
@@ -112,7 +112,7 @@ impl TuringMachine
                 '+' => {
                     let mut counter = 1;
 
-                    while self.instructions[(self.instruction_pointer + counter) as usize] == '+' {
+                    while *self.instructions.get((self.instruction_pointer + counter) as usize).unwrap_or(&'\0') == '+' {
                         counter += 1;
                     }
 
@@ -126,7 +126,7 @@ impl TuringMachine
                 '-' => {
                     let mut counter = 1;
 
-                    while self.instructions[(self.instruction_pointer + counter) as usize] == '-' {
+                    while *self.instructions.get((self.instruction_pointer + counter) as usize).unwrap_or(&'\0') == '-' {
                         counter += 1;
                     }
 
